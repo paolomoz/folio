@@ -1,0 +1,25 @@
+/* shoji-monastic · 1640 · Japanese minka, winter light through rice paper
+   Source: library/palettes.json
+   Rules: shu once · ai is a wall, never a line · sumi for type, timber for structure */
+:root {
+  /* palette named tokens (kept for in-deck references) */
+  --shoji:  #f2eadc;
+  --tatami: #bca77d;
+  --timber: #3b2a1d;
+  --ai:     #1d3a4e;
+  --sumi:   #191613;
+  --shu:    #a8554a;
+
+  /* abstract role bindings */
+  --ground:      var(--shoji);
+  --surface-2:   #ece2cf;                        /* shoji warmed */
+  --type:        var(--sumi);
+  --type-dim:    rgba(59, 42, 29, 0.55);
+  --type-faint:  rgba(59, 42, 29, 0.32);
+  --structure:   var(--timber);
+  --rule:        rgba(59, 42, 29, 0.18);
+  --accent:      var(--tatami);                  /* sand as quiet accent */
+  --field:       var(--ai);
+  --field-on:    var(--shoji);
+  --seal:        var(--shu);                     /* once-per-deck */
+}

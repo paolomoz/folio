@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Palette Library — sourced, opinionated, anti-slop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ─── gallery chrome — telex-adjacent, deliberate ──────────────── */
+:root {
+  --g-paper:  #f1ebde;
+  --g-paper2: #e7dfcc;
+  --g-ink:    #1c1714;
+  --g-mono:   #5e554a;
+  --g-rule:   #b8af9c;
+  --g-mark:   #a5532a;   /* sienna — the gallery's own once-per-page accent */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--g-paper); color: var(--g-ink); }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv11';
+  line-height: 1.45;
+}
+
+/* ─── header ───────────────────────────────────────────────────── */
+header.gallery {
+  max-width: 1380px; margin: 0 auto;
+  padding: 5rem 3rem 3rem;
+  border-bottom: 2px solid var(--g-ink);
+  position: relative;
+}
+header.gallery .stamp {
+  position: absolute; top: 4.5rem; right: 3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--g-mark);
+  border: 2px solid var(--g-mark);
+  padding: 0.4rem 0.7rem;
+  transform: rotate(-2deg);
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--g-mono); margin-bottom: 1.4rem; font-weight: 600;
+}
+h1.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(3.4rem, 6vw, 5.4rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.4rem;
+}
+h1.title em {
+  font-style: italic;
+  color: var(--g-mark);
+}
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--g-mono);
+  max-width: 760px;
+  margin-bottom: 2.4rem;
+  line-height: 1.4;
+}
+
+/* principles list — small caps, hand-set */
+.principles {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86rem; color: var(--g-mono);
+  letter-spacing: 0.04em;
+  max-width: 1100px;
+}
+.principles li {
+  list-style: none;
+  padding-left: 1.4rem;
+  position: relative;
+  line-height: 1.5;
+}
+.principles li::before {
+  content: '§';
+  position: absolute; left: 0;
+  color: var(--g-mark); font-weight: 700;
+}
+
+/* ─── grid of palettes ─────────────────────────────────────────── */
+.grid {
+  max-width: 1380px; margin: 0 auto;
+  padding: 3rem 3rem 6rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+}
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; }
+  .principles { grid-template-columns: 1fr; }
+  header.gallery .stamp { display: none; }
+}
+
+/* ─── palette card ─────────────────────────────────────────────── */
+.palette {
+  background: var(--g-paper2);
+  border: 2px solid var(--g-ink);
+  display: flex; flex-direction: column;
+  position: relative;
+}
+
+.p-meta {
+  padding: 1.6rem 1.6rem 1.2rem;
+  border-bottom: 2px solid var(--g-ink);
+}
+.p-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 0.6rem;
+}
+.p-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 2.4rem; line-height: 1;
+  letter-spacing: -0.015em;
+}
+.p-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem; color: var(--g-mono);
+  letter-spacing: 0.18em;
+}
+.p-source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86rem;
+  color: var(--g-mono);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+.p-register {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--g-ink);
+}
+
+/* ─── swatches ──────────────────────────────────────────────────── */
+.p-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-bottom: 2px solid var(--g-ink);
+}
+.sw {
+  position: relative;
+  height: 96px;
+  border: 0;
+  border-right: 2px solid var(--g-ink);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: left;
+  padding: 0.6rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: filter 0.15s;
+}
+.sw:last-child { border-right: 0; }
+.sw:hover { filter: brightness(1.06); }
+.sw .sw-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  opacity: 0.92;
+}
+.sw .sw-hex {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  opacity: 0.78;
+}
+.sw[data-tone="dark"] { color: var(--g-paper); }
+.sw[data-tone="light"] { color: var(--g-ink); }
+
+/* tooltip on swatch hover with role */
+.sw .sw-role {
+  position: absolute;
+  left: 50%; bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 0.35rem 0.6rem;
+  background: var(--g-ink); color: var(--g-paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem; letter-spacing: 0.04em;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 5;
+  border: 1px solid var(--g-paper);
+}
+.sw .sw-role::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--g-ink);
+}
+.sw:hover .sw-role { opacity: 1; }
+
+/* ─── specimen frame ────────────────────────────────────────────── */
+.p-specimen {
+  flex: 1;
+  min-height: 280px;
+  border-bottom: 2px solid var(--g-ink);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── rules + use ───────────────────────────────────────────────── */
+.p-rules {
+  padding: 1.2rem 1.6rem;
+  border-bottom: 2px solid var(--g-ink);
+}
+.p-rules-h {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  color: var(--g-mark);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.p-rules ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem 1.4rem;
+}
+.p-rules li {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  color: var(--g-ink);
+  line-height: 1.45;
+  padding-left: 1.1rem;
+  position: relative;
+}
+.p-rules li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--g-mark); font-weight: 800;
+  font-size: 1.4rem; line-height: 0.9;
+}
+
+.p-use {
+  display: grid; grid-template-columns: 1fr 1fr;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+.p-use > div {
+  padding: 0.9rem 1.6rem;
+  line-height: 1.4;
+}
+.p-use .p-for { border-right: 2px solid var(--g-ink); color: var(--g-ink); }
+.p-use .p-not { color: var(--g-mono); background: var(--g-paper); }
+.p-use .lbl {
+  font-weight: 700; color: var(--g-mark);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  font-size: 0.7rem;
+  display: block; margin-bottom: 0.2rem;
+}
+
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  PER-PALETTE SPECIMENS                                        ║
+   ║  each in its own register, rendered in its own tokens         ║
+   ╚══════════════════════════════════════════════════════════════╝ */
+
+/* ── TELEX 1986 — interoffice memo ─────────────────────────────── */
+.spec-telex {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 1.6rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  position: relative;
+  height: 100%;
+}
+.spec-telex .memo-head {
+  display: flex; justify-content: space-between;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.spec-telex .memo-head .ref { color: var(--muddy); }
+.spec-telex .priority {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-weight: 700; letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+  font-size: 0.78rem;
+}
+.spec-telex .priority::after {
+  content: '●'; color: var(--stamp); font-size: 1.1rem;
+}
+.spec-telex .memo-rule {
+  height: 1px; background: var(--rule);
+  margin: 0.4rem 0 0.7rem;
+}
+.spec-telex .memo-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; line-height: 1.45;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  max-width: 28em;
+}
+.spec-telex .memo-body .red {
+  color: var(--stamp); font-weight: 600;
+  font-style: italic;
+}
+.spec-telex .memo-foot {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-size: 0.74rem;
+  color: var(--muddy);
+  border-top: 1px dashed var(--rule);
+  padding-top: 0.5rem;
+  margin-top: 0.8rem;
+}
+.spec-telex .memo-foot .sig {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 1rem;
+}
+.spec-telex .form-card {
+  background: var(--hush);
+  border: 1px solid var(--rule);
+  padding: 0.5rem 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  display: inline-block;
+  color: var(--muddy);
+  margin-top: 0.3rem;
+}
+
+/* ── F-91W — LCD readout ──────────────────────────────────────── */
+.spec-casio {
+  background: var(--case);
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+}
+.spec-casio::before {
+  content: 'CASIO  ·  WATER RESIST 30M';
+  position: absolute; top: 0.7rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  color: var(--ghost);
+}
+.spec-casio .lcd {
+  background: var(--panel);
+  border: 4px solid var(--bezel);
+  padding: 1.4rem 2rem 1.2rem;
+  position: relative;
+  font-family: 'JetBrains Mono', monospace;
+  width: 100%; max-width: 380px;
+}
+.spec-casio .lcd-top {
+  display: flex; justify-content: space-between;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--digit);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.spec-casio .lcd-top .ghost { color: var(--ghost); }
+.spec-casio .time {
+  font-size: 3.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--digit);
+  line-height: 1;
+  position: relative;
+}
+.spec-casio .time .sec {
+  font-size: 1.4rem;
+  color: var(--digit);
+  margin-left: 0.4rem;
+  vertical-align: top;
+}
+.spec-casio .time .ghost {
+  position: absolute; inset: 0;
+  color: var(--ghost);
+  z-index: 0;
+}
+.spec-casio .time .live { position: relative; z-index: 1; }
+.spec-casio .lcd-bot {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 0.5rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.1em;
+  color: var(--digit);
+  font-weight: 600;
+}
+.spec-casio .lcd-bot .day {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+}
+.spec-casio .lcd-bot .alarm {
+  display: flex; gap: 0.5rem;
+  font-size: 0.6rem; letter-spacing: 0.18em;
+  color: var(--ghost);
+}
+.spec-casio .lcd-bot .alarm .on { color: var(--digit); }
+.spec-casio .glow {
+  position: absolute;
+  inset: 8px;
+  background: var(--amber);
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  transition: opacity 0.4s;
+}
+.spec-casio:hover .glow { opacity: 0.18; }
+.spec-casio .hint {
+  position: absolute; bottom: 0.7rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.28em;
+  color: var(--ghost);
+  text-transform: uppercase;
+}
+
+/* ── POLYCHROMIE 1931 — architectural section ─────────────────── */
+.spec-polychromie {
+  background: var(--ivoire);
+  height: 100%;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.spec-polychromie .arch {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 18% 1fr 26%;
+  grid-template-rows: 22% 1fr 18%;
+  position: relative;
+  border-bottom: 3px solid var(--noir);
+}
+.spec-polychromie .wall-l { background: var(--ocre); grid-row: 1 / 3; grid-column: 1; }
+.spec-polychromie .opening {
+  background: var(--ceruleen);
+  grid-row: 1; grid-column: 2;
+  border-bottom: 1px solid var(--ombre);
+  position: relative;
+}
+.spec-polychromie .opening::after {
+  content: '';
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 1px; background: var(--ivoire); opacity: 0.5;
+}
+.spec-polychromie .wall-r { background: var(--terre); grid-row: 1 / 3; grid-column: 3; }
+.spec-polychromie .wall-mid { background: var(--ivoire); grid-row: 2; grid-column: 2; }
+.spec-polychromie .floor { background: var(--ombre); grid-row: 3; grid-column: 1 / 4; }
+.spec-polychromie .annot {
+  position: absolute; left: 1.2rem; top: 1.2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--noir);
+  font-size: 0.95rem;
+  background: var(--ivoire);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--noir);
+}
+.spec-polychromie .annot small {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--ombre);
+  margin-top: 0.15rem;
+}
+.spec-polychromie .scale {
+  padding: 0.6rem 1.2rem;
+  display: flex; gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 0.18em;
+  color: var(--noir);
+  text-transform: uppercase;
+  background: var(--ivoire);
+}
+.spec-polychromie .scale .tick {
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.spec-polychromie .scale .tick::before {
+  content: ''; display: block;
+  width: 10px; height: 10px;
+  background: currentColor;
+}
+
+/* ── SHOJI — haiku card with seal ─────────────────────────────── */
+.spec-shoji {
+  background: var(--shoji);
+  height: 100%;
+  padding: 2rem 2.4rem;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.spec-shoji::before {
+  /* tatami strip on the right */
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 14%;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 6px, rgba(0,0,0,0.06) 6px 7px),
+    var(--tatami);
+}
+.spec-shoji .sumi-line {
+  height: 100%; width: 1px;
+  background: var(--sumi);
+  position: absolute;
+  left: 1.6rem; top: 0;
+  opacity: 0.3;
+}
+.spec-shoji .haiku {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--sumi);
+  font-size: 1.4rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-left: 1.4rem;
+  max-width: 70%;
+}
+.spec-shoji .haiku .l1 { padding-left: 0; }
+.spec-shoji .haiku .l2 { padding-left: 2rem; }
+.spec-shoji .haiku .l3 { padding-left: 4rem; color: var(--timber); }
+.spec-shoji .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--timber);
+  text-transform: uppercase;
+  padding-left: 1.4rem;
+  margin-top: 0.6rem;
+}
+.spec-shoji .seal {
+  position: absolute;
+  bottom: 1.6rem; left: 50%;
+  transform: translateX(-100%) rotate(-3deg);
+  width: 56px; height: 56px;
+  background: var(--shu);
+  border: 3px solid var(--shu);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-style: italic;
+  color: var(--shoji);
+  font-size: 1.3rem;
+  letter-spacing: -0.04em;
+  box-shadow: 1px 2px 0 rgba(0,0,0,0.05);
+}
+.spec-shoji .ai-band {
+  position: absolute;
+  top: 0; right: 14%;
+  width: 28%;
+  height: 100%;
+  background: var(--ai);
+  opacity: 0.92;
+  z-index: 0;
+}
+.spec-shoji .ai-band::after {
+  content: '基';
+  position: absolute;
+  bottom: 1.4rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--shoji);
+  font-size: 2.4rem;
+  opacity: 0.18;
+}
+.spec-shoji .haiku, .spec-shoji .meta, .spec-shoji .seal {
+  position: relative; z-index: 1;
+}
+
+/* ── RISO BISQUE — zine flyer ─────────────────────────────────── */
+.spec-riso {
+  background: var(--stock);
+  height: 100%;
+  padding: 1.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.spec-riso::before {
+  /* halftone pattern */
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, var(--halftone) 1px, transparent 1.6px);
+  background-size: 6px 6px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.spec-riso .flyer {
+  position: relative;
+  z-index: 2;
+  display: flex; flex-direction: column;
+  height: 100%;
+}
+.spec-riso .flyer-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  color: var(--federal);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  display: flex; justify-content: space-between;
+}
+.spec-riso .flyer-head .iss { color: var(--fluo); }
+.spec-riso .headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--fluo);
+  /* riso registration drift effect */
+  text-shadow: 2px 2px 0 var(--federal);
+  margin-bottom: 0.5rem;
+}
+.spec-riso .headline .br { color: var(--federal); text-shadow: -2px -2px 0 var(--fluo); }
+.spec-riso .body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.4;
+  max-width: 32em;
+  margin-bottom: 0.6rem;
+}
+.spec-riso .body .accent { color: var(--federal); font-weight: 700; }
+.spec-riso .pills {
+  display: flex; gap: 0.4rem; margin-top: auto;
+  flex-wrap: wrap;
+}
+.spec-riso .pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  padding: 0.25rem 0.55rem;
+  border: 2px solid var(--federal);
+  color: var(--federal);
+  text-transform: uppercase;
+  background: var(--stock);
+}
+.spec-riso .pill.fluo { background: var(--fluo); color: var(--ink); border-color: var(--ink); }
+.spec-riso .pill.yellow { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+.spec-riso .reg-mark {
+  position: absolute;
+  top: 0.6rem; right: 0.6rem;
+  width: 14px; height: 14px;
+  z-index: 3;
+}
+.spec-riso .reg-mark::before, .spec-riso .reg-mark::after {
+  content: ''; position: absolute;
+  background: var(--federal);
+}
+.spec-riso .reg-mark::before { left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); }
+.spec-riso .reg-mark::after { top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); }
+
+/* ── NIGHT TUBE — wayfinding ──────────────────────────────────── */
+.spec-tube {
+  background: var(--midnight);
+  height: 100%;
+  padding: 1.6rem 2rem;
+  position: relative;
+  display: flex; flex-direction: column;
+  color: var(--chalk);
+}
+.spec-tube .lamp {
+  position: absolute;
+  top: 0; left: 30%; right: 30%;
+  height: 60%;
+  background:
+    radial-gradient(ellipse at top, rgba(232,154,60,0.22) 0%, rgba(232,154,60,0.05) 40%, transparent 70%);
+  pointer-events: none;
+}
+.spec-tube .head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.24em;
+  color: var(--smoke);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  z-index: 2;
+  position: relative;
+}
+.spec-tube .head .live {
+  display: flex; align-items: center; gap: 0.4rem;
+  color: var(--sodium);
+  font-weight: 700;
+}
+.spec-tube .head .live::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sodium);
+  box-shadow: 0 0 10px var(--sodium);
+}
+.spec-tube .sign {
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  z-index: 2; position: relative;
+}
+.spec-tube .way {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 4.4vw, 3.2rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+  color: var(--chalk);
+  display: flex; align-items: center; gap: 1rem;
+}
+.spec-tube .way .arrow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  color: var(--sodium);
+  font-size: 1.1em;
+  line-height: 0.9;
+}
+.spec-tube .lines {
+  display: flex; gap: 0.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+.spec-tube .line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  background: var(--platform);
+  color: var(--chalk);
+  border: 1px solid var(--smoke);
+}
+.spec-tube .line.last {
+  background: var(--wine);
+  color: var(--chalk);
+  border-color: var(--wine);
+}
+.spec-tube .strip {
+  margin-top: 0.9rem;
+  background: var(--platform);
+  border-top: 2px solid var(--smoke);
+  padding: 0.6rem 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  display: flex; justify-content: space-between;
+  letter-spacing: 0.1em;
+  color: var(--chalk);
+  z-index: 2; position: relative;
+}
+.spec-tube .strip .next { color: var(--sodium); font-weight: 700; }
+.spec-tube .strip .terminal { color: var(--smoke); }
+
+/* ── HERBARIUM 1894 — Kew specimen card ───────────────────────── */
+.spec-herbarium {
+  background: var(--vellum);
+  color: var(--gall);
+  height: 100%;
+  padding: 1.4rem 1.6rem 1.2rem;
+  position: relative;
+  font-family: 'Cormorant Garamond', serif;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+/* foxing dots in corners — the deliberate decay */
+.spec-herbarium::before,
+.spec-herbarium::after {
+  content: '';
+  position: absolute;
+  width: 44px; height: 44px;
+  background: radial-gradient(circle, var(--foxing) 0%, transparent 60%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.spec-herbarium::before { top: -8px; left: -10px; }
+.spec-herbarium::after { bottom: -10px; right: -6px; transform: scale(1.3); opacity: 0.45; }
+
+.spec-herbarium .stamp-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gall);
+  border-bottom: 1px solid var(--rust);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.spec-herbarium .stamp-row .cat {
+  border: 2px solid var(--gall);
+  padding: 0.22rem 0.55rem;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+.spec-herbarium .stamp-row .coll {
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 0.92rem;
+  color: var(--rust);
+}
+.spec-herbarium .plant {
+  flex: 1;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0.6rem 0;
+}
+.spec-herbarium .stem {
+  width: 2px; height: 70%;
+  background: var(--pressed);
+  position: relative;
+}
+.spec-herbarium .leaf-l, .spec-herbarium .leaf-r {
+  position: absolute;
+  width: 56px; height: 18px;
+  background: var(--pressed);
+  opacity: 0.85;
+}
+.spec-herbarium .leaf-l {
+  top: 35%; right: 100%;
+  border-radius: 50% 8% 50% 8%;
+  transform-origin: right center; transform: rotate(18deg);
+}
+.spec-herbarium .leaf-r {
+  top: 60%; left: 100%;
+  border-radius: 8% 50% 8% 50%;
+  transform-origin: left center; transform: rotate(-22deg);
+}
+.spec-herbarium .leaf-r2 {
+  position: absolute;
+  top: 18%; left: 100%;
+  width: 38px; height: 14px;
+  background: var(--pressed);
+  border-radius: 8% 50% 8% 50%;
+  transform-origin: left center; transform: rotate(-10deg);
+  opacity: 0.7;
+}
+.spec-herbarium .flower {
+  position: absolute;
+  top: -6px; left: 50%; transform: translateX(-50%);
+  width: 22px; height: 22px;
+  background: var(--rust);
+  border-radius: 50% 50% 50% 0;
+  transform: translateX(-50%) rotate(-32deg);
+  opacity: 0.9;
+}
+.spec-herbarium .flower::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px;
+  width: 14px; height: 14px;
+  background: var(--foxing);
+  border-radius: 50% 50% 50% 0;
+  opacity: 0.6;
+}
+.spec-herbarium .label {
+  border-top: 1px dashed var(--rust);
+  padding-top: 0.7rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.4;
+  color: var(--gall);
+}
+.spec-herbarium .label .species {
+  font-weight: 600;
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 0.15rem;
+}
+.spec-herbarium .label .loc {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--gall);
+  background: var(--wash);
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  border: 1px solid var(--gall);
+}
+
+/* ── KODACHROME 1965 — slide mount ────────────────────────────── */
+.spec-kodachrome {
+  background: var(--slide);
+  color: var(--pearl);
+  height: 100%;
+  padding: 1.5rem 1.6rem 1.3rem;
+  display: flex; flex-direction: column;
+  font-family: 'JetBrains Mono', monospace;
+  position: relative;
+}
+.spec-kodachrome .frame-row {
+  display: flex; justify-content: space-between;
+  font-size: 0.66rem;
+  letter-spacing: 0.32em;
+  color: var(--pearl);
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+  opacity: 0.55;
+  font-weight: 600;
+}
+.spec-kodachrome .frame-row .yel {
+  color: var(--butter);
+  opacity: 1;
+}
+.spec-kodachrome .slide-mount {
+  flex: 1;
+  background: var(--pearl);
+  padding: 12px;
+  position: relative;
+  display: flex;
+  min-height: 140px;
+  box-shadow: inset 0 0 0 1px var(--slide);
+}
+.spec-kodachrome .slide-mount .pic {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--slide);
+}
+.spec-kodachrome .pic .band { height: 100%; }
+.spec-kodachrome .pic .band-cobalt { background: var(--cobalt); flex: 1.4; }
+.spec-kodachrome .pic .band-vermillion {
+  background: var(--vermillion);
+  flex: 1.0;
+  position: relative;
+}
+.spec-kodachrome .pic .band-vermillion::after {
+  /* a sun disc, kodachrome saturation */
+  content: '';
+  position: absolute;
+  bottom: 22%; right: 14%;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--butter);
+  box-shadow: 0 0 0 6px rgba(216,51,30,0.45);
+}
+.spec-kodachrome .pic .band-velvia {
+  background: var(--velvia);
+  flex: 0.7;
+}
+.spec-kodachrome .pic .horizon {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 32%;
+  height: 1px;
+  background: var(--slide);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.spec-kodachrome .slide-mount::before {
+  content: '';
+  position: absolute;
+  bottom: 14px; left: 12px;
+  width: 18px; height: 6px;
+  background: var(--cobalt);
+}
+.spec-kodachrome .slide-mount::after {
+  content: 'PROCESSED · K-14';
+  position: absolute;
+  bottom: 14px; right: 12px;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  color: var(--slide);
+  font-weight: 700;
+}
+.spec-kodachrome .caption {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pearl);
+  font-weight: 600;
+}
+.spec-kodachrome .caption .frame-tag {
+  background: var(--butter);
+  color: var(--slide);
+  padding: 0.25rem 0.55rem;
+  letter-spacing: 0.16em;
+  font-weight: 800;
+}
+.spec-kodachrome .caption .meta {
+  color: var(--pearl);
+  opacity: 0.78;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 1rem;
+}
+
+</style>
+</head>
+<body>
+
+<header class="gallery">
+  <div class="stamp">v 0·1 — proof</div>
+  <div class="eyebrow">palette library · sourced · opinionated</div>
+  <h1 class="title">
+    Palettes that <em>refuse</em><br>
+    to be universal.
+  </h1>
+  <p class="subtitle">
+    Every palette here is anchored to a real-world reference, carries one
+    deliberately wrong colour, and declares what it is <em>not</em> for.
+    No cyan-violet AI gradient. No primary/secondary/accent. The roles
+    are named for the world they came from.
+  </p>
+  <ul class="principles">
+    <li>every palette cites a real-world reference</li>
+    <li>every palette includes one deliberately wrong colour</li>
+    <li>roles are named for their world</li>
+    <li>rules and forbidden pairings are explicit</li>
+    <li>no gradients in the spec</li>
+    <li>each palette refuses to be universal</li>
+  </ul>
+</header>
+
+<section class="grid" id="grid"></section>
+
+<script>
+/* ────────────────────────────────────────────────────────────────
+   Inline data — same as palettes.json, kept here so the file works
+   on file:// without a server.
+   ──────────────────────────────────────────────────────────────── */
+const PALETTES = [
+  {
+    id: "telex-1986", name: "Telex", year: "1986",
+    source: "Olivetti house style · Walter Ballmer · mid-80s",
+    register: "civic · functional · faintly bureaucratic",
+    use_for: "editorial · data-dense layouts · longform readouts",
+    avoid_for: "celebratory moments · consumer marketing",
+    tokens: {
+      paper:  { hex: "#efe6d2", role: "ground", tone: "light" },
+      ink:    { hex: "#1d1815", role: "type, body", tone: "dark" },
+      stamp:  { hex: "#c8302b", role: "single accent — once per page", tone: "dark" },
+      rule:   { hex: "#7a7268", role: "divider, table line", tone: "dark" },
+      hush:   { hex: "#dcd2b8", role: "secondary surface", tone: "light" },
+      muddy:  { hex: "#56463a", role: "footnote — the wrong colour", tone: "dark" }
+    },
+    rules: [
+      "stamp appears once per page",
+      "ink on paper is the only body combination",
+      "muddy reserved for footnotes",
+      "no gradients · no drop shadows"
+    ],
+    specimen: telexSpecimen
+  },
+  {
+    id: "casio-f91w", name: "F-91W", year: "1989",
+    source: "Casio F-91W LCD readout · panel + digit colour, photographed at noon",
+    register: "indifferent · pragmatic · slightly sad",
+    use_for: "timestamp displays · monospaced data · spy-fi aesthetic",
+    avoid_for: "warmth · anything claiming to delight",
+    tokens: {
+      panel:  { hex: "#a3a890", role: "LCD ground", tone: "dark" },
+      digit:  { hex: "#22232b", role: "active segment, type", tone: "light" },
+      case:   { hex: "#181818", role: "case, frame", tone: "light" },
+      bezel:  { hex: "#2c2e2c", role: "matte plastic", tone: "light" },
+      ghost:  { hex: "#7a7d6c", role: "inactive segment", tone: "dark" },
+      amber:  { hex: "#f5b65a", role: "backlight — only on press · the wrong colour", tone: "dark" }
+    },
+    rules: [
+      "amber only appears on press / hold",
+      "all numerals monospace, segment-style preferred",
+      "ghost segments visible behind active digits",
+      "no anti-aliasing on the segments"
+    ],
+    specimen: casioSpecimen
+  },
+  {
+    id: "shoji-monastic", name: "Shoji", year: "1640",
+    source: "Japanese minka interior · winter light through rice paper",
+    register: "monastic · domestic · still",
+    use_for: "reading surfaces · meditative content · writing tools",
+    avoid_for: "dashboards · anything urgent",
+    tokens: {
+      shoji:   { hex: "#f2eadc", role: "rice paper, ground", tone: "dark" },
+      tatami:  { hex: "#bca77d", role: "woven straw", tone: "dark" },
+      timber:  { hex: "#3b2a1d", role: "stained beam", tone: "light" },
+      ai:      { hex: "#1d3a4e", role: "indigo cloth — single field", tone: "light" },
+      sumi:    { hex: "#191613", role: "ink, brushstroke", tone: "light" },
+      shu:     { hex: "#a8554a", role: "vermilion seal — once · the wrong colour", tone: "light" }
+    },
+    rules: [
+      "shu appears only as a seal mark",
+      "ai is a wall, never a line",
+      "sumi for type, timber for structure — they do not mix",
+      "negative space is itself a colour"
+    ],
+    specimen: shojiSpecimen
+  },
+  {
+    id: "riso-bisque", name: "Riso Bisque", year: "2010s",
+    source: "Risograph zine palette · fluorescent pink + federal blue on recycled stock",
+    register: "scrappy · fluorescent · DIY",
+    use_for: "zines · event posters · loud editorial",
+    avoid_for: "financial reports · anything that needs trust",
+    tokens: {
+      stock:    { hex: "#efe7d3", role: "recycled paper", tone: "dark" },
+      fluo:     { hex: "#ff5e8a", role: "fluo pink — riso F", tone: "dark" },
+      federal:  { hex: "#1e2a64", role: "federal blue — riso F", tone: "light" },
+      halftone: { hex: "#b8aa8e", role: "warm dot, mid-tone", tone: "dark" },
+      ink:      { hex: "#1a1a1a", role: "black plate", tone: "light" },
+      yellow:   { hex: "#f0c93f", role: "second pass · the wrong colour", tone: "dark" }
+    },
+    rules: [
+      "two passes only — fluo + federal, or fluo + yellow",
+      "always show registration drift (1–2px)",
+      "halftone dots visible · do not anti-alias",
+      "stock colour bleeds through · never fill 100%"
+    ],
+    specimen: risoSpecimen
+  },
+  {
+    id: "night-tube", name: "Night Tube", year: "2016",
+    source: "TfL Night Tube launch · sodium-lit platform photography",
+    register: "civic · nocturnal · slightly tired",
+    use_for: "wayfinding · status displays · after-hours UI",
+    avoid_for: "daytime products · consumer cheer",
+    tokens: {
+      midnight: { hex: "#0e1424", role: "sky after midnight", tone: "light" },
+      platform: { hex: "#21283a", role: "tunnel, raised surface", tone: "light" },
+      sodium:   { hex: "#e89a3c", role: "streetlamp orange — single light", tone: "dark" },
+      smoke:    { hex: "#404654", role: "concrete, secondary type", tone: "light" },
+      chalk:    { hex: "#e6e2d6", role: "off-white poster paper", tone: "dark" },
+      wine:     { hex: "#9a1d28", role: "warning red — last train · the wrong colour", tone: "light" }
+    },
+    rules: [
+      "sodium illuminates only one element per screen",
+      "wine reserved for last-call / shutdown states",
+      "type is chalk on midnight — never inverted",
+      "no fluorescent anything"
+    ],
+    specimen: tubeSpecimen
+  },
+  {
+    id: "kodachrome-65", name: "Kodachrome", year: "1965",
+    source: "Kodachrome 25/64 slide stock · National Geographic colour rendition · 1960–80",
+    register: "vivid · cinematic · hyperreal",
+    use_for: "photography galleries · editorial spreads · saturated layouts",
+    avoid_for: "data-dense UI · long-form reading · anything quiet",
+    tokens: {
+      slide:      { hex: "#1c1612", role: "slide-frame ground", tone: "light" },
+      vermillion: { hex: "#d8331e", role: "kodachrome red — primary saturation", tone: "light" },
+      cobalt:     { hex: "#2961a8", role: "kodachrome sky blue", tone: "light" },
+      butter:     { hex: "#f0c14a", role: "saturated yellow", tone: "dark" },
+      velvia:     { hex: "#1f6e3c", role: "saturated foliage green", tone: "light" },
+      pearl:      { hex: "#e8e0d0", role: "mat-board mount · the wrong colour", tone: "dark" }
+    },
+    rules: [
+      "never adjacent: cobalt and butter — they vibrate",
+      "vermillion never on velvia",
+      "pearl is for mounting only — never ground or type",
+      "max two saturated colours per surface"
+    ],
+    specimen: kodachromeSpecimen
+  }
+];
+
+/* ─── render ─────────────────────────────────────────────────── */
+const grid = document.getElementById('grid');
+
+PALETTES.forEach((p, idx) => {
+  const card = document.createElement('article');
+  card.className = 'palette';
+  card.dataset.id = p.id;
+  // inject palette tokens as CSS custom properties on the card
+  const styleVars = Object.entries(p.tokens)
+    .map(([k, v]) => `--${k}: ${v.hex}`)
+    .join('; ');
+  card.setAttribute('style', styleVars);
+
+  card.innerHTML = `
+    <div class="p-meta">
+      <div class="p-row">
+        <div class="p-name">${p.name}</div>
+        <div class="p-year">${p.year} · ${String(idx+1).padStart(2,'0')} / ${String(PALETTES.length).padStart(2,'0')}</div>
+      </div>
+      <div class="p-source">${p.source}</div>
+      <div class="p-register">${p.register}</div>
+    </div>
+
+    <div class="p-swatches">
+      ${Object.entries(p.tokens).map(([k, v]) => `
+        <button class="sw" style="background: ${v.hex};" data-tone="${v.tone}">
+          <span class="sw-role">${v.role}</span>
+          <span class="sw-name">${k}</span>
+          <span class="sw-hex">${v.hex.toUpperCase()}</span>
+        </button>
+      `).join('')}
+    </div>
+
+    <div class="p-specimen spec-${p.id.split('-')[0]}">
+      ${p.specimen()}
+    </div>
+
+    <div class="p-rules">
+      <div class="p-rules-h">Rules — read before use</div>
+      <ul>
+        ${p.rules.map(r => `<li>${r}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="p-use">
+      <div class="p-for"><span class="lbl">For</span>${p.use_for}</div>
+      <div class="p-not"><span class="lbl">Not for</span>${p.avoid_for}</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+/* ─── specimen renderers ──────────────────────────────────────── */
+
+function telexSpecimen() {
+  return `
+    <div class="spec-telex">
+      <div class="memo-head">
+        <span>Internal · MEMO</span>
+        <span class="ref">REF / 47-B</span>
+        <span>14·II·86</span>
+      </div>
+      <div class="priority">Priority — all departments</div>
+      <p class="memo-body">
+        The new printer roster will arrive Monday. Please <span class="red">sign and return form 47-B</span>
+        before end of week. Late submissions held in reception.
+      </p>
+      <div class="form-card">FORM 47-B · ROSTER · 1986</div>
+      <div class="memo-foot">
+        <span>p. 1 / 1 — see overleaf for typesetting notes</span>
+        <span class="sig">— W. B.</span>
+      </div>
+    </div>`;
+}
+
+function casioSpecimen() {
+  return `
+    <div class="spec-casio">
+      <div class="lcd">
+        <div class="lcd-top">
+          <span>ALARM</span><span class="ghost">CHIME</span><span class="ghost">SNZ</span><span>PM</span>
+        </div>
+        <div class="time">
+          <span class="ghost">88:88</span>
+          <span class="live">20:47<span class="sec">31</span></span>
+        </div>
+        <div class="lcd-bot">
+          <span class="day">MO 06·05</span>
+          <span class="alarm"><span class="on">▸ALM</span><span>CHM</span><span>LT</span></span>
+        </div>
+      </div>
+      <div class="glow"></div>
+      <div class="hint">hover to press · backlight</div>
+    </div>`;
+}
+
+function polychromieSpecimen() {
+  return `
+    <div class="spec-polychromie">
+      <div class="arch">
+        <div class="wall-l"></div>
+        <div class="opening"></div>
+        <div class="wall-r"></div>
+        <div class="wall-mid"></div>
+        <div class="floor"></div>
+        <div class="annot">
+          <span>section · cabanon</span>
+          <small>scale 1 : 50</small>
+        </div>
+      </div>
+      <div class="scale">
+        <span class="tick" style="color: var(--ocre);">ocre</span>
+        <span class="tick" style="color: var(--terre);">terre</span>
+        <span class="tick" style="color: var(--ceruleen);">céruléen</span>
+        <span class="tick" style="color: var(--ombre);">ombre</span>
+      </div>
+    </div>`;
+}
+
+function shojiSpecimen() {
+  return `
+    <div class="spec-shoji">
+      <div class="ai-band"></div>
+      <div class="sumi-line"></div>
+      <div class="haiku">
+        <div class="l1">furuike ya</div>
+        <div class="l2">kawazu tobikomu</div>
+        <div class="l3">mizu no oto</div>
+      </div>
+      <div class="meta">— Bashō · 古池 · 1686</div>
+      <div class="seal">朱</div>
+    </div>`;
+}
+
+function risoSpecimen() {
+  return `
+    <div class="spec-riso">
+      <div class="reg-mark"></div>
+      <div class="flyer">
+        <div class="flyer-head">
+          <span>BISQUE QUARTERLY</span>
+          <span class="iss">ISSUE · 04</span>
+        </div>
+        <div class="headline">
+          PAPER<br>
+          <span class="br">BLEEDS</span>
+        </div>
+        <div class="body">
+          A risograph survey of <span class="accent">two-pass colour</span> on
+          recycled stock — published in 80 numbered copies, hand-bound.
+        </div>
+        <div class="pills">
+          <span class="pill fluo">FLUO PINK</span>
+          <span class="pill">FEDERAL</span>
+          <span class="pill yellow">YELLOW</span>
+          <span class="pill">SOLD OUT</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function tubeSpecimen() {
+  return `
+    <div class="spec-tube">
+      <div class="lamp"></div>
+      <div class="head">
+        <span>LIVERPOOL ST · PLATFORM 7</span>
+        <span class="live">NIGHT SERVICE</span>
+      </div>
+      <div class="sign">
+        <div class="way"><span class="arrow">→</span> Way out · Bishopsgate</div>
+        <div class="lines">
+          <span class="line">CENTRAL</span>
+          <span class="line">CIRCLE</span>
+          <span class="line last">LAST TRAIN · 02:46</span>
+        </div>
+      </div>
+      <div class="strip">
+        <span>Next train</span>
+        <span class="next">EALING BROADWAY · 4 min</span>
+        <span class="terminal">via Bank</span>
+      </div>
+    </div>`;
+}
+
+function herbariumSpecimen() {
+  return `
+    <div class="spec-herbarium">
+      <div class="stamp-row">
+        <span class="cat">K · 1894 · 04711</span>
+        <span class="coll">coll. C. Henslow — pressed July</span>
+      </div>
+      <div class="plant">
+        <div class="stem">
+          <div class="leaf-r2"></div>
+          <div class="leaf-l"></div>
+          <div class="leaf-r"></div>
+          <div class="flower"></div>
+        </div>
+      </div>
+      <div class="label">
+        <span class="species">Digitalis purpurea</span>
+        Hedge-bank, parish of Lockinge, Berkshire.<br>
+        <span class="loc">collected · 14·VII·1894</span>
+      </div>
+    </div>`;
+}
+
+function kodachromeSpecimen() {
+  return `
+    <div class="spec-kodachrome">
+      <div class="frame-row">
+        <span>roll · 25</span>
+        <span class="yel">kodachrome · 25 ASA</span>
+        <span>frame · 14 / 36</span>
+      </div>
+      <div class="slide-mount">
+        <div class="pic">
+          <div class="band band-cobalt"></div>
+          <div class="band band-vermillion"></div>
+          <div class="band band-velvia"></div>
+          <div class="horizon"></div>
+        </div>
+      </div>
+      <div class="caption">
+        <span class="frame-tag">K-25 · 1965</span>
+        <span class="meta">— Marfa, after rain</span>
+      </div>
+    </div>`;
+}
+</script>
+
+</body>
+</html>

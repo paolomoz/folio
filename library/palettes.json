@@ -1,0 +1,156 @@
+{
+  "version": "0.1",
+  "principles": [
+    "every palette cites a real-world reference",
+    "every palette includes one deliberately wrong colour",
+    "roles are named for their world, not primary/secondary/accent",
+    "rules and forbidden pairings are explicit",
+    "no gradients in the spec",
+    "each palette refuses to be universal"
+  ],
+  "palettes": [
+    {
+      "id": "telex-1986",
+      "name": "Telex",
+      "year": "1986",
+      "source": "Olivetti house style · Walter Ballmer · mid-80s",
+      "register": "civic · functional · faintly bureaucratic",
+      "use_for": ["editorial", "data-dense layouts", "longform readouts"],
+      "avoid_for": ["celebratory moments", "consumer marketing"],
+      "tokens": {
+        "paper":  { "hex": "#efe6d2", "role": "ground" },
+        "ink":    { "hex": "#1d1815", "role": "type, body" },
+        "stamp":  { "hex": "#c8302b", "role": "single accent — once per page" },
+        "rule":   { "hex": "#7a7268", "role": "divider, table line" },
+        "hush":   { "hex": "#dcd2b8", "role": "secondary surface, card" },
+        "muddy":  { "hex": "#56463a", "role": "footnote, deep ink — the wrong colour" }
+      },
+      "rules": [
+        "stamp appears once per page",
+        "ink on paper is the only body combination",
+        "muddy is reserved for footnotes and page numbers",
+        "no gradients · no drop shadows"
+      ]
+    },
+
+    {
+      "id": "casio-f91w",
+      "name": "F-91W",
+      "year": "1989",
+      "source": "Casio F-91W LCD readout · panel + digit colour, photographed at noon",
+      "register": "indifferent · pragmatic · slightly sad",
+      "use_for": ["timestamp displays", "monospaced data", "spy-fi aesthetic"],
+      "avoid_for": ["warmth", "anything claiming to delight"],
+      "tokens": {
+        "panel":   { "hex": "#a3a890", "role": "LCD ground" },
+        "digit":   { "hex": "#22232b", "role": "active segment, type" },
+        "case":    { "hex": "#181818", "role": "case, frame" },
+        "bezel":   { "hex": "#2c2e2c", "role": "matte plastic" },
+        "ghost":   { "hex": "#7a7d6c", "role": "inactive segment, faint memory" },
+        "amber":   { "hex": "#f5b65a", "role": "backlight — only when held — the wrong colour" }
+      },
+      "rules": [
+        "amber only appears on press / hold",
+        "all numerals monospace, segment-style preferred",
+        "ghost segments visible behind active digits",
+        "no anti-aliasing on the segments"
+      ]
+    },
+
+    {
+      "id": "shoji-monastic",
+      "name": "Shoji",
+      "year": "1640",
+      "source": "Japanese minka interior · winter light through rice paper",
+      "register": "monastic · domestic · still",
+      "use_for": ["reading surfaces", "meditative content", "writing tools"],
+      "avoid_for": ["dashboards", "anything urgent"],
+      "tokens": {
+        "shoji":   { "hex": "#f2eadc", "role": "rice paper, ground" },
+        "tatami":  { "hex": "#bca77d", "role": "woven straw, secondary surface" },
+        "timber":  { "hex": "#3b2a1d", "role": "stained beam, structural type" },
+        "ai":      { "hex": "#1d3a4e", "role": "indigo cloth, single deep field" },
+        "sumi":    { "hex": "#191613", "role": "ink, brushstroke" },
+        "shu":     { "hex": "#a8554a", "role": "vermilion seal — once · the wrong colour" }
+      },
+      "rules": [
+        "shu appears only as a seal mark",
+        "ai is a wall, never a line",
+        "sumi for type, timber for structure — they do not mix",
+        "negative space is itself a colour"
+      ]
+    },
+
+    {
+      "id": "riso-bisque",
+      "name": "Riso Bisque",
+      "year": "2010s",
+      "source": "Risograph zine palette · fluorescent pink + federal blue on recycled stock",
+      "register": "scrappy · fluorescent · DIY",
+      "use_for": ["zines", "event posters", "loud editorial"],
+      "avoid_for": ["financial reports", "anything that needs trust"],
+      "tokens": {
+        "stock":     { "hex": "#efe7d3", "role": "recycled paper, ground" },
+        "fluo":      { "hex": "#ff5e8a", "role": "fluo pink — riso F" },
+        "federal":   { "hex": "#1e2a64", "role": "federal blue — riso F" },
+        "halftone":  { "hex": "#b8aa8e", "role": "warm dot, mid-tone" },
+        "ink":       { "hex": "#1a1a1a", "role": "black plate" },
+        "yellow":    { "hex": "#f0c93f", "role": "second pass — only when fluo is absent · the wrong colour" }
+      },
+      "rules": [
+        "two passes only — fluo + federal, or fluo + yellow",
+        "always show registration drift (1–2px)",
+        "halftone dots visible · do not anti-alias",
+        "stock colour bleeds through · never fill 100%"
+      ]
+    },
+
+    {
+      "id": "night-tube",
+      "name": "Night Tube",
+      "year": "2016",
+      "source": "TfL Night Tube launch · sodium-lit platform photography",
+      "register": "civic · nocturnal · slightly tired",
+      "use_for": ["wayfinding", "status displays", "after-hours UI"],
+      "avoid_for": ["daytime products", "consumer cheer"],
+      "tokens": {
+        "midnight":  { "hex": "#0e1424", "role": "sky after midnight, ground" },
+        "platform":  { "hex": "#21283a", "role": "tunnel, raised surface" },
+        "sodium":    { "hex": "#e89a3c", "role": "streetlamp orange — single light source" },
+        "smoke":     { "hex": "#404654", "role": "concrete, secondary type" },
+        "chalk":     { "hex": "#e6e2d6", "role": "off-white poster paper, primary type" },
+        "wine":      { "hex": "#9a1d28", "role": "deep warning red — last train · the wrong colour" }
+      },
+      "rules": [
+        "sodium illuminates only one element per screen",
+        "wine reserved for last-call / shutdown states",
+        "type is chalk on midnight — never inverted",
+        "no fluorescent anything"
+      ]
+    },
+
+    {
+      "id": "kodachrome-65",
+      "name": "Kodachrome",
+      "year": "1965",
+      "source": "Kodachrome 25/64 slide stock · National Geographic colour rendition · 1960–80",
+      "register": "vivid · cinematic · hyperreal",
+      "use_for": ["photography galleries", "editorial spreads", "saturated layouts"],
+      "avoid_for": ["data-dense UI", "long-form reading", "anything quiet"],
+      "tokens": {
+        "slide":      { "hex": "#1c1612", "role": "slide-frame deep black, ground" },
+        "vermillion": { "hex": "#d8331e", "role": "kodachrome red, primary saturation" },
+        "cobalt":     { "hex": "#2961a8", "role": "kodachrome sky blue" },
+        "butter":     { "hex": "#f0c14a", "role": "saturated yellow" },
+        "velvia":     { "hex": "#1f6e3c", "role": "saturated foliage green" },
+        "pearl":      { "hex": "#e8e0d0", "role": "mat-board mount · the wrong colour — only unsaturated note" }
+      },
+      "rules": [
+        "never adjacent: cobalt and butter — they vibrate",
+        "vermillion never on velvia",
+        "pearl is for mounting only — never ground or type",
+        "max two saturated colours per surface"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  Pattern: 02 · Loop
+  Job:     show a cyclical process — sense/generate/distribute/measure, or
+           any 3–5-step rhythm that compounds.
+  Slot:    early-middle (when the cycle is context) OR last (when the cycle
+           IS the anchor — pedagogical / scientific decks). For closing
+           variants, the centre seal carries the deck's stake.
+  Shape:   meta-and-diagram. SVG ring with stations on the perimeter. Centre
+           holds a counter (early-middle) or the --seal (closing). Stations
+           as text on/around the ring; arrows along the ring give direction.
+  Replace: {{TITLE}}, {{TOPIC}}, {{SLIDE_NUM}}, {{TOTAL}},
+           {{PREV_HREF}}, {{NEXT_HREF}}, {{SIDE_DOTS}},
+           {{EYEBROW}}, {{HEADLINE}}, {{HEADLINE_STRUCT}}, {{BODY_1}}, {{BODY_2}},
+           {{STAKE_BODY}}, {{SIGNOFF}},
+           {{STATION_1}}..{{STATION_4}}, {{STATION_LABEL_1}}..{{STATION_LABEL_4}},
+           {{SEAL_NUM}}, {{SEAL_LABEL}}, {{SEAL_CAPTION}}.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}} · {{SLIDE_NUM}} / {{TOTAL}} · Loop</title>
+<link rel="stylesheet" href="assets/palette.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { overflow: hidden; }
+
+  .loop-stage {
+    position: fixed; inset: 64px 0 56px 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .loop-meta {
+    padding: 2rem 3rem 2rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 640px;
+  }
+  .loop-meta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1.04; letter-spacing: -0.02em;
+    color: var(--type);
+    margin-bottom: 1.6rem;
+  }
+  .loop-meta h2 .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--structure);
+    display: block; font-size: 0.5em;
+    letter-spacing: 0.04em; margin-top: 0.4rem;
+  }
+  .loop-meta p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--structure);
+    font-size: 1.2rem; line-height: 1.6;
+    max-width: 38ch; margin-bottom: 1.4rem;
+  }
+  .loop-meta .stake {
+    margin-top: 1.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.18em; color: var(--structure);
+    line-height: 1.7;
+  }
+  .loop-meta .stake .num { color: var(--type); font-weight: 700; font-size: 0.95rem; }
+  .loop-meta .signoff {
+    margin-top: 1.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.4rem; color: var(--field);
+    letter-spacing: -0.01em;
+  }
+
+  .loop-diagram {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+  }
+  .loop-svg { width: 100%; max-width: 580px; aspect-ratio: 1 / 1; }
+
+  .station-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    fill: var(--type); font-weight: 600;
+  }
+  .station-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: 1.1rem; fill: var(--field);
+  }
+  .ring-tick { stroke: var(--structure); stroke-width: 1; opacity: 0.8; }
+  .loop-arrow { fill: var(--field); opacity: 0.85; }
+
+  /* The seal — single use of --seal in the entire deck */
+  .seal {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%) rotate(-4deg);
+    width: 132px; height: 132px;
+    background: var(--seal);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    color: var(--ground);
+    border: 3px solid var(--seal);
+    box-shadow: inset 0 0 0 6px var(--seal), inset 0 0 0 7px rgba(0, 0, 0, 0.25);
+  }
+  .seal .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: 2.2rem; line-height: 1;
+    color: var(--ground);
+  }
+  .seal .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ground); opacity: 0.92;
+    margin-top: 0.35rem;
+  }
+  .seal-caption {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, 92px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--structure);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">{{TOPIC}}</span></div>
+  <div class="slide-counter">SLIDE · {{SLIDE_NUM}} / {{TOTAL}}</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="{{PREV_HREF}}">← Prev</a>
+    <a class="nav-link" href="{{NEXT_HREF}}">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  {{SIDE_DOTS}}
+</aside>
+
+<div class="loop-stage">
+
+  <aside class="loop-meta">
+    <div class="eyebrow reveal reveal-1">{{EYEBROW}}</div>
+    <h2 class="reveal reveal-2">
+      {{HEADLINE}}
+      <span class="struct">{{HEADLINE_STRUCT}}</span>
+    </h2>
+    <p class="reveal reveal-3">{{BODY_1}}</p>
+    <p class="reveal reveal-3">{{BODY_2}}</p>
+    <div class="stake reveal reveal-4">
+      {{STAKE_BODY}}
+      <!-- Example: <span class="num">2.5%</span> FRESH WATER · ... -->
+    </div>
+    <div class="signoff reveal reveal-5">
+      {{SIGNOFF}}
+    </div>
+  </aside>
+
+  <div class="loop-diagram reveal reveal-3">
+    <svg class="loop-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+      <!-- The ring -->
+      <circle cx="300" cy="300" r="220" fill="none" stroke="var(--structure)" stroke-width="1" stroke-opacity="0.32"/>
+      <circle cx="300" cy="300" r="220" fill="none" stroke="var(--field)" stroke-width="2" stroke-opacity="0.18" stroke-dasharray="4 8"/>
+
+      <!-- Four ring ticks -->
+      <line x1="300" y1="76"  x2="300" y2="92"  class="ring-tick"/>
+      <line x1="524" y1="300" x2="508" y2="300" class="ring-tick"/>
+      <line x1="300" y1="524" x2="300" y2="508" class="ring-tick"/>
+      <line x1="76"  y1="300" x2="92"  y2="300" class="ring-tick"/>
+
+      <!-- Direction arrows along the ring (clockwise) -->
+      <g class="loop-arrow">
+        <polygon points="455,140 462,160 442,154" transform="rotate(45, 450, 150)"/>
+        <polygon points="455,460 462,440 442,446" transform="rotate(-45, 450, 450)"/>
+        <polygon points="145,460 138,440 158,446" transform="rotate(45, 150, 450)"/>
+        <polygon points="145,140 138,160 158,154" transform="rotate(-45, 150, 150)"/>
+      </g>
+
+      <!-- Station I (top) -->
+      <g>
+        <text x="300" y="56" class="station-num" text-anchor="middle">{{STATION_1}}</text>
+        <text x="300" y="36" class="station-label" text-anchor="middle">{{STATION_LABEL_1}}</text>
+      </g>
+
+      <!-- Station II (right) -->
+      <g>
+        <text x="565" y="295" class="station-num" text-anchor="middle">{{STATION_2}}</text>
+        <text x="565" y="315" class="station-label" text-anchor="middle">{{STATION_LABEL_2}}</text>
+      </g>
+
+      <!-- Station III (bottom) -->
+      <g>
+        <text x="300" y="565" class="station-num" text-anchor="middle">{{STATION_3}}</text>
+        <text x="300" y="585" class="station-label" text-anchor="middle">{{STATION_LABEL_3}}</text>
+      </g>
+
+      <!-- Station IV (left) -->
+      <g>
+        <text x="35" y="295" class="station-num" text-anchor="middle">{{STATION_4}}</text>
+        <text x="35" y="315" class="station-label" text-anchor="middle">{{STATION_LABEL_4}}</text>
+      </g>
+
+      <!-- Connector legs -->
+      <g stroke="var(--field)" stroke-width="1" stroke-opacity="0.4">
+        <line x1="300" y1="80" x2="300" y2="100"/>
+        <line x1="520" y1="300" x2="500" y2="300"/>
+        <line x1="300" y1="520" x2="300" y2="500"/>
+        <line x1="80"  y1="300" x2="100" y2="300"/>
+      </g>
+
+      <!-- Diagonal hints between stations -->
+      <g stroke="var(--accent)" stroke-width="0.8" stroke-opacity="0.5" stroke-dasharray="2 6">
+        <path d="M 300 100 Q 450 150, 500 300" fill="none"/>
+        <path d="M 500 300 Q 450 450, 300 500" fill="none"/>
+        <path d="M 300 500 Q 150 450, 100 300" fill="none"/>
+        <path d="M 100 300 Q 150 150, 300 100" fill="none"/>
+      </g>
+    </svg>
+
+    <!-- Optional: --seal at centre. Remove if using Loop early-middle. -->
+    <div class="seal reveal reveal-4">
+      <span class="num">{{SEAL_NUM}}</span>
+      <span class="label">{{SEAL_LABEL}}</span>
+    </div>
+    <span class="seal-caption reveal reveal-5">{{SEAL_CAPTION}}</span>
+  </div>
+
+</div>
+
+<div class="slide-foot">
+  <a href="{{PREV_HREF}}">← Prev</a>
+  <a href="{{NEXT_HREF}}">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '{{NEXT_HREF}}';
+    if (e.key === 'ArrowLeft') location.href = '{{PREV_HREF}}';
+  });
+</script>
+</body>
+</html>

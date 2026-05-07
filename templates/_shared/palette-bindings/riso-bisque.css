@@ -1,0 +1,23 @@
+/* riso-bisque · 2010s · Risograph zine palette · fluo pink + federal blue on recycled stock
+   Source: library/palettes.json
+   Rules: two passes only — fluo+federal or fluo+yellow · always show 1–2px registration drift · halftone visible · stock bleeds through */
+:root {
+  --stock:    #efe7d3;
+  --fluo:     #ff5e8a;
+  --federal:  #1e2a64;
+  --halftone: #b8aa8e;
+  --ink-blk:  #1a1a1a;
+  --yellow-2: #f0c93f;
+
+  --ground:      var(--stock);
+  --surface-2:   var(--halftone);
+  --type:        var(--ink-blk);
+  --type-dim:    rgba(26, 26, 26, 0.7);
+  --type-faint:  rgba(26, 26, 26, 0.42);
+  --structure:   var(--federal);
+  --rule:        rgba(26, 26, 26, 0.22);
+  --accent:      var(--fluo);
+  --field:       var(--federal);
+  --field-on:    var(--stock);
+  --seal:        var(--yellow-2);                /* second-pass only when fluo absent */
+}

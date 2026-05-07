@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Water Cycle · 5 / 5 · The Cycle</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* Loop — four stations in a ring, shu seal at centre */
+  body { overflow: hidden; }
+
+  .loop-stage {
+    position: fixed; inset: 64px 0 56px 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  /* Left: closing voice */
+  .loop-meta {
+    padding: 2rem 3rem 2rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    max-width: 640px;
+  }
+  .loop-meta .eyebrow { margin-bottom: 1.4rem; }
+  .loop-meta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1.04; letter-spacing: -0.02em;
+    color: var(--sumi);
+    margin-bottom: 1.6rem;
+  }
+  .loop-meta h2 .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--timber);
+    display: block; font-size: 0.5em;
+    letter-spacing: 0.04em; margin-top: 0.4rem;
+  }
+  .loop-meta p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--timber);
+    font-size: 1.2rem; line-height: 1.6;
+    max-width: 38ch; margin-bottom: 1.4rem;
+  }
+  .loop-meta .stake {
+    margin-top: 1.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.18em; color: var(--timber);
+    line-height: 1.7;
+  }
+  .loop-meta .stake .num { color: var(--sumi); font-weight: 700; font-size: 0.95rem; }
+  .loop-meta .signoff {
+    margin-top: 1.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.4rem; color: var(--ai);
+    letter-spacing: -0.01em;
+  }
+
+  /* Right: the loop diagram */
+  .loop-diagram {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+  }
+  .loop-svg {
+    width: 100%; max-width: 580px; aspect-ratio: 1 / 1;
+  }
+  .station-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    fill: var(--sumi); font-weight: 600;
+  }
+  .station-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: 1.1rem; fill: var(--ai);
+  }
+  .station-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+    fill: var(--timber-mute);
+  }
+  .ring-tick {
+    stroke: var(--timber); stroke-width: 1; opacity: 0.8;
+  }
+  .loop-arrow {
+    fill: var(--ai); opacity: 0.85;
+  }
+
+  /* The seal — single use of `shu` in the entire deck */
+  .seal {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%) rotate(-4deg);
+    width: 132px; height: 132px;
+    background: var(--shu);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    color: var(--shoji);
+    border: 3px solid var(--shu);
+    /* Slight texture using inset shadow with sumi to mimic ink-block edge */
+    box-shadow: inset 0 0 0 6px var(--shu), inset 0 0 0 7px rgba(25, 22, 19, 0.25);
+  }
+  .seal .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: 2.2rem; line-height: 1;
+    color: var(--shoji);
+  }
+  .seal .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(242, 234, 220, 0.92);
+    margin-top: 0.35rem;
+  }
+  .seal-caption {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, 92px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--timber);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">Water Cycle</span></div>
+  <div class="slide-counter">SLIDE · 5 / 5</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="04-precipitation.html">← Prev</a>
+    <a class="nav-link" href="01-manifesto.html">Restart →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-evaporation.html" data-label="2. Evaporation"></a>
+  <a href="03-condensation.html" data-label="3. Condensation"></a>
+  <a href="04-precipitation.html" data-label="4. Precipitation"></a>
+  <a href="05-cycle.html" class="current" data-label="5. The Cycle"></a>
+</aside>
+
+<div class="loop-stage">
+
+  <aside class="loop-meta">
+    <div class="eyebrow reveal reveal-1">V · Loop · Why It Matters</div>
+    <h2 class="reveal reveal-2">
+      The cycle holds.
+      <span class="struct">— for now.</span>
+    </h2>
+    <p class="reveal reveal-3">
+      Four stations, on repeat, for four billion years.
+      The same molecules that fell as rain on Pangaea
+      are in the rivers we drink from today.
+    </p>
+    <p class="reveal reveal-3">
+      But of all the water on Earth, almost none is ours
+      to drink. The rest is salt, ice, or out of reach.
+    </p>
+    <div class="stake reveal reveal-4">
+      <span class="num">2.5%</span> &nbsp;FRESH WATER &nbsp;·&nbsp; <span class="num">&lt;1%</span> ACCESSIBLE<br>
+      WARMING AIR &nbsp;·&nbsp; FASTER EVAPORATION &nbsp;·&nbsp; HEAVIER RAINFALL<br>
+      DRIER DROUGHTS &nbsp;·&nbsp; MELTING GLACIERS &nbsp;·&nbsp; RISING SEAS
+    </div>
+    <div class="signoff reveal reveal-5">
+      The loop is older than us. It will outlast us.<br>
+      How we live inside it — that's the only question.
+    </div>
+  </aside>
+
+  <div class="loop-diagram reveal reveal-3">
+    <svg class="loop-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+      <!-- The ring -->
+      <circle cx="300" cy="300" r="220"
+              fill="none" stroke="#3b2a1d" stroke-width="1" stroke-opacity="0.32"/>
+      <circle cx="300" cy="300" r="220"
+              fill="none" stroke="#1d3a4e" stroke-width="2" stroke-opacity="0.18"
+              stroke-dasharray="4 8"/>
+
+      <!-- Four ring ticks -->
+      <line x1="300" y1="76"  x2="300" y2="92"  class="ring-tick"/>
+      <line x1="524" y1="300" x2="508" y2="300" class="ring-tick"/>
+      <line x1="300" y1="524" x2="300" y2="508" class="ring-tick"/>
+      <line x1="76"  y1="300" x2="92"  y2="300" class="ring-tick"/>
+
+      <!-- Arrows along the ring (subtle direction markers, clockwise) -->
+      <g class="loop-arrow">
+        <!-- Top-right arrow (between station I and II) -->
+        <polygon points="455,140 462,160 442,154" transform="rotate(45, 450, 150)"/>
+        <!-- Bottom-right -->
+        <polygon points="455,460 462,440 442,446" transform="rotate(-45, 450, 450)"/>
+        <!-- Bottom-left -->
+        <polygon points="145,460 138,440 158,446" transform="rotate(45, 150, 450)"/>
+        <!-- Top-left -->
+        <polygon points="145,140 138,160 158,154" transform="rotate(-45, 150, 150)"/>
+      </g>
+
+      <!-- Station I — Evaporation (top) -->
+      <g>
+        <text x="300" y="56" class="station-num" text-anchor="middle">I.</text>
+        <text x="300" y="36" class="station-label" text-anchor="middle">Evaporation</text>
+      </g>
+
+      <!-- Station II — Condensation (right) -->
+      <g>
+        <text x="565" y="295" class="station-num" text-anchor="middle">II.</text>
+        <text x="565" y="315" class="station-label" text-anchor="middle">Condensation</text>
+      </g>
+
+      <!-- Station III — Precipitation (bottom) -->
+      <g>
+        <text x="300" y="565" class="station-num" text-anchor="middle">III.</text>
+        <text x="300" y="585" class="station-label" text-anchor="middle">Precipitation</text>
+      </g>
+
+      <!-- Station IV — Collection (left) -->
+      <g>
+        <text x="35" y="295" class="station-num" text-anchor="middle">IV.</text>
+        <text x="35" y="315" class="station-label" text-anchor="middle">Collection</text>
+      </g>
+
+      <!-- Connector legs (short ticks pointing in from each station) -->
+      <g stroke="#1d3a4e" stroke-width="1" stroke-opacity="0.4">
+        <line x1="300" y1="80" x2="300" y2="100"/>
+        <line x1="520" y1="300" x2="500" y2="300"/>
+        <line x1="300" y1="520" x2="300" y2="500"/>
+        <line x1="80"  y1="300" x2="100" y2="300"/>
+      </g>
+
+      <!-- Diagonal hints between stations -->
+      <g stroke="#bca77d" stroke-width="0.8" stroke-opacity="0.5" stroke-dasharray="2 6">
+        <path d="M 300 100 Q 450 150, 500 300" fill="none"/>
+        <path d="M 500 300 Q 450 450, 300 500" fill="none"/>
+        <path d="M 300 500 Q 150 450, 100 300" fill="none"/>
+        <path d="M 100 300 Q 150 150, 300 100" fill="none"/>
+      </g>
+    </svg>
+
+    <!-- The shu seal — once per deck -->
+    <div class="seal reveal reveal-4">
+      <span class="num">2.5%</span>
+      <span class="label">fresh ·<br>all we have</span>
+    </div>
+    <span class="seal-caption reveal reveal-5">↑ everything we drink, grow, & wash with</span>
+  </div>
+
+</div>
+
+<div class="slide-foot">
+  <a href="04-precipitation.html">← Prev</a>
+  <a href="01-manifesto.html">↺ Restart</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '01-manifesto.html';
+    if (e.key === 'ArrowLeft') location.href = '04-precipitation.html';
+  });
+</script>
+</body>
+</html>

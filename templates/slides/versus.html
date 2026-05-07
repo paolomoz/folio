@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+  Pattern: 03 · Versus (vertical axis · default)
+  Job:     contrast two states. Then/now, with/without, before/after.
+  Slot:    middle.
+  Shape:   full-bleed. Two halves split by a diagonal seam (clip-path).
+           Left = WAS / before / pre-state. Right = IS / after / post-state.
+           Press 'v' to flip the seam (added tactility). One side may use
+           --field as wall; the other uses --ground.
+  Axis:    vertical (left/right). For above/below contrasts use versus-horizontal.html.
+  Replace: {{TITLE}}, {{TOPIC}}, {{SLIDE_NUM}}, {{TOTAL}},
+           {{PREV_HREF}}, {{NEXT_HREF}}, {{SIDE_DOTS}},
+           {{LEFT_EYEBROW}}, {{LEFT_WORD}}, {{LEFT_SUB}}, {{LEFT_MOCK}},
+           {{RIGHT_EYEBROW}}, {{RIGHT_WORD}}, {{RIGHT_SUB}}, {{RIGHT_MOCK}}.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}} · {{SLIDE_NUM}} / {{TOTAL}} · Versus</title>
+<link rel="stylesheet" href="assets/palette.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { overflow: hidden; }
+
+  .versus-stage { position: fixed; inset: 64px 0 56px 0; overflow: hidden; }
+
+  .half {
+    position: absolute; inset: 0;
+    display: flex; align-items: center;
+    transition: clip-path 0.7s cubic-bezier(0.7,0,0.3,1), filter 0.7s ease;
+  }
+  .half.left {
+    background: var(--surface-2);
+    clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+    justify-content: flex-start; padding-left: 4%;
+  }
+  .half.right {
+    background: var(--field); color: var(--field-on);
+    clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+    justify-content: flex-end; padding-right: 4%;
+  }
+  body.swapped .half.left  { clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%); filter: hue-rotate(60deg) saturate(0.8); }
+  body.swapped .half.right { clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%); filter: hue-rotate(-90deg); }
+
+  .divider {
+    position: absolute; top: 0; bottom: 0;
+    width: 1px; left: 50%;
+    background: var(--structure);
+    transform: translateX(-1px) skewX(-11.31deg);
+    z-index: 5; opacity: 0.4;
+  }
+
+  .pane {
+    width: 36%; padding: 1.5rem; text-align: center;
+    transition: transform 0.7s cubic-bezier(0.7,0,0.3,1);
+  }
+  .left .pane { margin-left: 2%; }
+  .right .pane { margin-right: 2%; }
+  body.swapped .left  .pane { transform: translateX(56vw); }
+  body.swapped .right .pane { transform: translateX(-56vw); }
+
+  .pane-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; letter-spacing: 0.28em; text-transform: uppercase;
+    margin-bottom: 1.4rem;
+    font-weight: 600;
+  }
+  .left  .pane-eyebrow { color: var(--structure); }
+  .right .pane-eyebrow { color: var(--accent); }
+
+  .pane-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(4rem, 8vw, 7rem);
+    line-height: 0.95; letter-spacing: -0.03em;
+    margin-bottom: 0.8rem;
+  }
+  .left  .pane-word { color: var(--type); }
+  .right .pane-word { color: var(--field-on); }
+
+  .pane-sub { font-size: 1.05rem; line-height: 1.45; margin-bottom: 1.4rem; }
+  .left  .pane-sub { color: var(--structure); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .right .pane-sub { color: var(--field-on); opacity: 0.78; font-weight: 400; }
+
+  .key-hint {
+    position: fixed; bottom: 4.6rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; letter-spacing: 0.2em;
+    color: var(--type-dim); text-transform: uppercase;
+    z-index: 50;
+    background: var(--ground);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+    border: 1px solid var(--rule);
+    font-weight: 500;
+  }
+  .key-hint kbd {
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--type-dim);
+    border-radius: 2px;
+    color: var(--accent);
+    margin: 0 0.3rem;
+    font-family: inherit;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">{{TOPIC}}</span></div>
+  <div class="slide-counter">SLIDE · {{SLIDE_NUM}} / {{TOTAL}}</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="{{PREV_HREF}}">← Prev</a>
+    <a class="nav-link" href="{{NEXT_HREF}}">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  {{SIDE_DOTS}}
+</aside>
+
+<div class="versus-stage">
+  <div class="half left reveal">
+    <div class="pane">
+      <div class="pane-eyebrow">{{LEFT_EYEBROW}}</div>
+      <h2 class="pane-word">{{LEFT_WORD}}</h2>
+      <p class="pane-sub">{{LEFT_SUB}}</p>
+      {{LEFT_MOCK}}
+    </div>
+  </div>
+
+  <div class="half right reveal reveal-2">
+    <div class="pane">
+      <div class="pane-eyebrow">{{RIGHT_EYEBROW}}</div>
+      <h2 class="pane-word">{{RIGHT_WORD}}</h2>
+      <p class="pane-sub">{{RIGHT_SUB}}</p>
+      {{RIGHT_MOCK}}
+    </div>
+  </div>
+
+  <div class="divider"></div>
+</div>
+
+<div class="key-hint">press <kbd>v</kbd> to flip the seam</div>
+
+<div class="slide-foot">
+  <a href="{{PREV_HREF}}">← Prev</a>
+  <a href="{{NEXT_HREF}}">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'v' || e.key === 'V') { document.body.classList.toggle('swapped'); }
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '{{NEXT_HREF}}';
+    if (e.key === 'ArrowLeft') location.href = '{{PREV_HREF}}';
+  });
+</script>
+</body>
+</html>

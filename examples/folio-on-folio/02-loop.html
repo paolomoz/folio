@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>folio · 2 / 6 · The Loop</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: radial-gradient(ellipse at top, #18102e 0%, #0c0d22 45%, var(--ink) 100%); }
+
+  .layout {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem;
+    align-items: center;
+  }
+  .slide-title { font-size: clamp(3.4rem, 6.5vw, 5.4rem); }
+  .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(1.4rem, 1.85vw, 1.8rem);
+    color: var(--dust-dim); line-height: 1.4;
+    max-width: 540px; margin-bottom: 2.4rem;
+  }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.6rem; }
+  .leg-item {
+    display: flex; align-items: baseline; gap: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem; letter-spacing: 0.06em;
+    color: var(--dust);
+  }
+  .leg-num { font-weight: 700; }
+  .leg-item:nth-child(1) .leg-num { color: var(--cyan); }
+  .leg-item:nth-child(2) .leg-num { color: var(--violet); }
+  .leg-item:nth-child(3) .leg-num { color: var(--cyan-bright); }
+  .leg-item:nth-child(4) .leg-num { color: var(--violet-bright); }
+
+  .stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-width: 620px; width: 100%; margin: 0 auto;
+  }
+  .ring-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .station { cursor: pointer; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); transform-origin: center; transform-box: fill-box; }
+  .station:hover { transform: scale(1.12); }
+  .station.bump { animation: stationBump 0.7s ease; }
+  @keyframes stationBump {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.25); filter: brightness(1.5) drop-shadow(0 0 24px currentColor); }
+    100% { transform: scale(1); }
+  }
+  .station-label {
+    font-family: 'Inter', sans-serif; font-weight: 800;
+    font-size: 16px; letter-spacing: -0.01em;
+    fill: var(--dust); pointer-events: none;
+  }
+  .station-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: 0.16em; font-weight: 600;
+    fill: var(--dust-dim); pointer-events: none;
+  }
+  .center-counter {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none;
+  }
+  .counter-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: clamp(2.6rem, 4.6vw, 4rem);
+    line-height: 1; color: var(--dust);
+    letter-spacing: -0.04em;
+  }
+  .counter-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem; letter-spacing: 0.28em;
+    color: var(--violet); text-transform: uppercase;
+    margin-top: 0.5rem; font-weight: 600;
+  }
+  .cap-tag {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, calc(-50% + 92px));
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: 1.2rem; color: var(--cyan-bright);
+    opacity: 0; transition: opacity 0.5s ease;
+    white-space: nowrap; pointer-events: none;
+    text-shadow: 0 2px 14px rgba(95,212,255,0.4);
+  }
+  .cap-tag.show { opacity: 1; }
+</style>
+</head>
+<body>
+<canvas class="bg-canvas" id="constellation"></canvas>
+
+<nav class="topnav">
+  <div class="logo"><span class="a">folio</span><span class="sep">/</span><span>The Loop</span></div>
+  <div class="slide-counter">SLIDE · 2 / 6</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="01-manifesto.html">← Prev</a>
+    <a class="nav-link" href="03-versus.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-loop.html" class="current" data-label="2. The Loop"></a>
+  <a href="03-versus.html" data-label="3. Versus"></a>
+  <a href="04-quote.html" data-label="4. Field Note"></a>
+  <a href="05-surface.html" data-label="5. Surface"></a>
+  <a href="06-arc.html" data-label="6. The Arc"></a>
+</aside>
+
+<main>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="layout">
+        <div class="left">
+          <div class="eyebrow reveal">02 · process · cyclical</div>
+          <h1 class="slide-title reveal reveal-1">
+            Four phases.<br>One <span class="serif">rhythm.</span>
+          </h1>
+          <p class="lead reveal reveal-2">
+            Every deck folio renders walks four phases in order.<br>
+            Each phase has a gate. Skipping the gate produces slop.
+          </p>
+          <div class="legend reveal reveal-3">
+            <div class="leg-item"><span class="leg-num">01</span> BRIEF — six questions, no shortcuts</div>
+            <div class="leg-item"><span class="leg-num">02</span> PLAN — palette + sequence with reasoning</div>
+            <div class="leg-item"><span class="leg-num">03</span> TYPESET — render each slide, enforce rules</div>
+            <div class="leg-item"><span class="leg-num">04</span> BIND — wire navigation, smoke-test end-to-end</div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="stage reveal reveal-2">
+            <svg class="ring-svg" viewBox="-310 -310 620 620">
+              <defs>
+                <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#5fd4ff"/>
+                  <stop offset="50%" stop-color="#c084fc"/>
+                  <stop offset="100%" stop-color="#5fd4ff"/>
+                </linearGradient>
+                <radialGradient id="centerGlow">
+                  <stop offset="0%" stop-color="rgba(95,212,255,0.35)"/>
+                  <stop offset="60%" stop-color="rgba(192,132,252,0.05)"/>
+                  <stop offset="100%" stop-color="transparent"/>
+                </radialGradient>
+                <filter id="softGlow"><feGaussianBlur stdDeviation="3"/></filter>
+              </defs>
+              <circle cx="0" cy="0" r="160" fill="url(#centerGlow)"/>
+              <circle cx="0" cy="0" r="220" fill="none" stroke="url(#ringGrad)" stroke-width="1.4" stroke-dasharray="4 8" opacity="0.55"/>
+              <circle cx="0" cy="0" r="220" fill="none" stroke="url(#ringGrad)" stroke-width="0.5"/>
+
+              <circle r="6" fill="#5fd4ff" filter="url(#softGlow)">
+                <animateMotion dur="6s" repeatCount="indefinite" path="M 220 0 A 220 220 0 1 1 -220 0 A 220 220 0 1 1 220 0 Z"/>
+              </circle>
+              <circle r="3" fill="#fff">
+                <animateMotion dur="6s" repeatCount="indefinite" path="M 220 0 A 220 220 0 1 1 -220 0 A 220 220 0 1 1 220 0 Z"/>
+              </circle>
+
+              <g class="station" data-cap="six questions · audience · anchor · tone · surface · off-limits · count" transform="translate(0,-220)">
+                <circle r="34" fill="#0c0d22" stroke="#5fd4ff" stroke-width="2"/>
+                <circle r="10" fill="#5fd4ff"/>
+                <text class="station-label" text-anchor="middle" y="-50">BRIEF</text>
+                <text class="station-num" text-anchor="middle" y="60">01</text>
+              </g>
+              <g class="station" data-cap="palette + sequence · why this · why not the others" transform="translate(220,0)">
+                <circle r="34" fill="#0c0d22" stroke="#c084fc" stroke-width="2"/>
+                <circle r="10" fill="#c084fc"/>
+                <text class="station-label" text-anchor="middle" x="60" y="6">PLAN</text>
+                <text class="station-num" text-anchor="middle" x="60" y="28">02</text>
+              </g>
+              <g class="station" data-cap="render slides · enforce palette rules · one accent" transform="translate(0,220)">
+                <circle r="34" fill="#0c0d22" stroke="#aae9ff" stroke-width="2"/>
+                <circle r="10" fill="#aae9ff"/>
+                <text class="station-label" text-anchor="middle" y="65">TYPESET</text>
+                <text class="station-num" text-anchor="middle" y="-50">03</text>
+              </g>
+              <g class="station" data-cap="wire navigation · smoke-test · ship the deck" transform="translate(-220,0)">
+                <circle r="34" fill="#0c0d22" stroke="#e0c3ff" stroke-width="2"/>
+                <circle r="10" fill="#e0c3ff"/>
+                <text class="station-label" text-anchor="middle" x="-60" y="6">BIND</text>
+                <text class="station-num" text-anchor="middle" x="-60" y="28">04</text>
+              </g>
+            </svg>
+
+            <div class="center-counter">
+              <div class="counter-num"><span id="counter">0</span></div>
+              <div class="counter-lbl">gates · per deck</div>
+            </div>
+            <div class="cap-tag" id="capTag"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="slide-foot">
+  <a href="01-manifesto.html">← Prev</a>
+  <a href="03-versus.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  startConstellation('constellation', { density: 0.5, colorA: '#c084fc', colorB: '#5fd4ff' });
+
+  const counter = document.getElementById('counter');
+  let cv = 0; const target = 4;
+  const tick = () => {
+    cv += 1;
+    if (cv > target) cv = target;
+    counter.textContent = String(cv);
+    if (cv < target) setTimeout(tick, 280);
+  };
+  setTimeout(tick, 800);
+
+  const capTag = document.getElementById('capTag');
+  let capTimer = null;
+  document.querySelectorAll('.station').forEach(s => {
+    s.addEventListener('click', () => {
+      s.classList.remove('bump');
+      void s.getBBox();
+      s.classList.add('bump');
+      capTag.textContent = '“ ' + s.dataset.cap + ' ”';
+      capTag.classList.add('show');
+      if (typeof window.constellationPulse === 'function') window.constellationPulse();
+      clearTimeout(capTimer);
+      capTimer = setTimeout(() => capTag.classList.remove('show'), 2400);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '03-versus.html';
+    if (e.key === 'ArrowLeft') location.href = '01-manifesto.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>folio · 4 / 6 · Field Note</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body { background: linear-gradient(180deg, #0a0d1a 0%, #0e0f24 100%); }
+
+  #grain { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.05; mix-blend-mode: screen; }
+
+  .stage {
+    flex: 1; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    width: 100%;
+  }
+
+  .marg {
+    position: absolute;
+    font-family: 'Caveat', cursive;
+    font-weight: 500;
+    font-size: 1.7rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+  }
+  .marg.m1 { top: 4%; right: 2%; transform: rotate(5deg); color: var(--violet-bright); max-width: 240px; }
+  .marg.m2 { bottom: 8%; left: 2%; transform: rotate(-7deg); color: var(--cyan-bright); max-width: 220px; }
+  .marg.m3 { top: 42%; right: 1%; transform: rotate(-3deg); color: var(--violet); font-size: 1.4rem; max-width: 160px; }
+  .marg .hand-arrow { display: inline-block; transform: scaleX(-1) rotate(15deg); margin-right: 0.2em; }
+
+  .quote-block {
+    position: relative;
+    padding: 0 4rem;
+    max-width: 1200px;
+  }
+
+  .open-quote {
+    position: absolute;
+    left: -0.5rem; top: -4rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 600;
+    font-size: clamp(8rem, 16vw, 16rem);
+    line-height: 0.7;
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.6;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 400;
+    font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+    color: var(--dust);
+    position: relative; z-index: 2;
+    cursor: default;
+  }
+  .quote-text .accent {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+  }
+
+  .ink-target { position: relative; display: inline-block; }
+  .ink-target::after {
+    content: '';
+    position: absolute;
+    bottom: 0.03em; left: -0.05em; right: -0.05em; height: 0.16em;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    border-radius: 8px;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.9s cubic-bezier(0.7,0,0.3,1);
+    opacity: 0.85;
+    filter: blur(0.5px);
+  }
+  .quote-text:hover .ink-target::after { transform: scaleX(1); }
+
+  .attribution {
+    margin-top: 3rem;
+    display: flex; align-items: center; gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+  .att-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--dust-dim);
+    font-size: 1.25rem; line-height: 1.4;
+  }
+  .att-meta .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 0.95rem; letter-spacing: 0.22em;
+    color: var(--violet); text-transform: uppercase;
+    display: block; margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .eyebrow-q {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1.6rem;
+    display: flex; align-items: center; gap: 1.2rem;
+    font-weight: 600;
+  }
+  .eyebrow-q::before {
+    content: ''; display: block; width: 70px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--cyan));
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+<canvas id="grain"></canvas>
+
+<nav class="topnav">
+  <div class="logo"><span class="a">folio</span><span class="sep">/</span><span>Field Note</span></div>
+  <div class="slide-counter">SLIDE · 4 / 6</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="03-versus.html">← Prev</a>
+    <a class="nav-link" href="05-surface.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-loop.html" data-label="2. The Loop"></a>
+  <a href="03-versus.html" data-label="3. Versus"></a>
+  <a href="04-quote.html" class="current" data-label="4. Field Note"></a>
+  <a href="05-surface.html" data-label="5. Surface"></a>
+  <a href="06-arc.html" data-label="6. The Arc"></a>
+</aside>
+
+<main>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="stage">
+
+        <div class="marg m1 reveal reveal-3">
+          ↻ &nbsp;the source<br>
+          is the antidote
+        </div>
+
+        <div class="marg m2 reveal reveal-3">
+          <span class="hand-arrow">↪</span> not "harmonised"<br>
+          <em>specific</em>
+        </div>
+
+        <div class="marg m3 reveal reveal-4">
+          keep the wrong<br>
+          colour ★
+        </div>
+
+        <div class="quote-block">
+          <div class="eyebrow-q reveal">field note · the discipline</div>
+          <div class="open-quote reveal reveal-1">"</div>
+          <p class="quote-text reveal reveal-2">
+            A palette without a<br>
+            <span class="ink-target">source</span> is just a
+            <span class="accent">harmony generator</span><br>
+            wearing a name tag.
+          </p>
+          <div class="attribution reveal reveal-3">
+            <div class="att-meta">
+              <span class="label">From the margin</span>
+              Pinned during a Plan-phase review ·<br>
+              before the palette was rejected.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="slide-foot">
+  <a href="03-versus.html">← Prev</a>
+  <a href="05-surface.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  (function grain() {
+    const c = document.getElementById('grain');
+    const ctx = c.getContext('2d');
+    function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    function paint() {
+      const w = 220, h = 140;
+      const off = document.createElement('canvas');
+      off.width = w; off.height = h;
+      const octx = off.getContext('2d');
+      const id = octx.createImageData(w, h);
+      for (let i = 0; i < id.data.length; i += 4) {
+        const v = Math.random() * 255;
+        id.data[i] = id.data[i+1] = id.data[i+2] = v;
+        id.data[i+3] = 60 + Math.random() * 40;
+      }
+      octx.putImageData(id, 0, 0);
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.drawImage(off, 0, 0, c.width, c.height);
+      setTimeout(paint, 80);
+    }
+    paint();
+  })();
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '05-surface.html';
+    if (e.key === 'ArrowLeft') location.href = '03-versus.html';
+  });
+</script>
+</body>
+</html>

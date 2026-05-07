@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>folio · 3 / 6 · Versus</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: #0a0a14; overflow: hidden; }
+
+  .versus-stage { position: fixed; inset: 64px 0 0 0; overflow: hidden; }
+
+  .half {
+    position: absolute; inset: 0;
+    display: flex; align-items: center;
+    transition: clip-path 0.7s cubic-bezier(0.7,0,0.3,1), filter 0.7s ease;
+  }
+  .half.then {
+    background: radial-gradient(ellipse at 25% 50%, #1c1838 0%, #110d24 60%, #08081a 100%);
+    clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+    justify-content: flex-start; padding-left: 4%;
+  }
+  .half.now {
+    background: radial-gradient(ellipse at 75% 50%, #1c1840 0%, #0d0c24 55%, #08081a 100%);
+    clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+    justify-content: flex-end; padding-right: 4%;
+  }
+  body.swapped .half.then { clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%); filter: hue-rotate(60deg) saturate(0.8); }
+  body.swapped .half.now  { clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%); filter: hue-rotate(-90deg); }
+
+  .divider {
+    position: absolute; top: 0; bottom: 0;
+    width: 2px; left: 50%;
+    background: linear-gradient(180deg, transparent, var(--cyan-bright) 20%, var(--violet) 80%, transparent);
+    transform: translateX(-1px) skewX(-11.31deg);
+    z-index: 5;
+    box-shadow: 0 0 24px rgba(192,132,252,0.4);
+  }
+
+  .pane {
+    width: 36%; padding: 1.5rem; text-align: center;
+    transition: transform 0.7s cubic-bezier(0.7,0,0.3,1);
+  }
+  .then .pane { margin-left: 2%; }
+  .now  .pane { margin-right: 2%; }
+  body.swapped .then .pane { transform: translateX(56vw); }
+  body.swapped .now  .pane { transform: translateX(-56vw); }
+
+  .pane-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; letter-spacing: 0.28em; text-transform: uppercase;
+    margin-bottom: 1.4rem;
+    font-weight: 600;
+  }
+  .then .pane-eyebrow { color: #ff8aa3; }
+  .now  .pane-eyebrow { color: var(--cyan); }
+
+  .pane-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(4rem, 8vw, 7rem);
+    line-height: 0.95; letter-spacing: -0.03em;
+    margin-bottom: 0.8rem;
+  }
+  .then .pane-word { color: #f0e0e8; text-shadow: 0 2px 18px rgba(255,138,163,0.2); }
+  .now  .pane-word {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .pane-sub { font-size: 1.05rem; line-height: 1.45; margin-bottom: 1.4rem; }
+  .then .pane-sub { color: rgba(240,224,232,0.65); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .now  .pane-sub { color: var(--dust-dim); font-weight: 400; }
+
+  .mock {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; overflow: hidden;
+    text-align: left;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+  }
+  .mock-bar {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.4);
+  }
+  .mock-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.18); }
+  .mock-url {
+    flex: 1; padding: 0.18rem 0.55rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: rgba(255,255,255,0.45);
+    background: rgba(0,0,0,0.35); border-radius: 3px;
+    margin: 0 0.4rem; text-align: center;
+  }
+  .mock-body { padding: 1rem; min-height: 200px; }
+
+  /* THEN — generic LLM deck */
+  .then .mock-body {
+    background: linear-gradient(135deg, #2961a8 0%, #c084fc 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .then .mock-body h4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; font-size: 1.6rem;
+    margin: 1rem 0 0.4rem;
+  }
+  .then .mock-body p {
+    font-size: 0.85rem; opacity: 0.9;
+    max-width: 90%; margin: 0 auto;
+  }
+  .then .mock-body .pill-row {
+    display: flex; gap: 0.4rem; justify-content: center;
+    margin-top: 1.4rem;
+  }
+  .then .mock-body .pill {
+    background: rgba(255,255,255,0.18);
+    border-radius: 100px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.7rem; font-weight: 600;
+  }
+
+  /* NOW — folio deck */
+  .now .mock-body {
+    background: var(--ink);
+    color: var(--dust);
+    padding: 1rem 1.1rem;
+  }
+  .now .mock-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+  .now .mock-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: 1.5rem; line-height: 1.05;
+    color: var(--dust); margin-bottom: 0.7rem;
+  }
+  .now .mock-title .accent {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .now .mock-rule {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--dust-faint);
+    border-left: 2px solid var(--violet);
+    padding: 0.3rem 0.6rem;
+    margin-top: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .key-hint {
+    position: fixed; bottom: 4.6rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem; letter-spacing: 0.2em;
+    color: var(--dust-dim); text-transform: uppercase;
+    z-index: 50;
+    background: rgba(6,10,20,0.65);
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255,255,255,0.14);
+    font-weight: 500;
+  }
+  .key-hint kbd {
+    padding: 0.2rem 0.55rem;
+    border: 2px solid rgba(255,255,255,0.28);
+    border-radius: 4px;
+    color: var(--violet);
+    margin: 0 0.3rem;
+    font-family: inherit;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span class="a">folio</span><span class="sep">/</span><span>Versus</span></div>
+  <div class="slide-counter">SLIDE · 3 / 6</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="02-loop.html">← Prev</a>
+    <a class="nav-link" href="04-quote.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-loop.html" data-label="2. The Loop"></a>
+  <a href="03-versus.html" class="current" data-label="3. Versus"></a>
+  <a href="04-quote.html" data-label="4. Field Note"></a>
+  <a href="05-surface.html" data-label="5. Surface"></a>
+  <a href="06-arc.html" data-label="6. The Arc"></a>
+</aside>
+
+<div class="versus-stage">
+  <div class="half then reveal">
+    <div class="pane">
+      <div class="pane-eyebrow">↤ AI SLOP</div>
+      <h2 class="pane-word">generic.</h2>
+      <p class="pane-sub">Cyan-violet gradient on every surface.<br>Round numbers in pill cards.<br>Could be any product.</p>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div>
+          <div class="mock-url">presentation.html</div>
+        </div>
+        <div class="mock-body">
+          <h4>Empower Your Workflow</h4>
+          <p>Unlock next-generation productivity with our AI-native platform.</p>
+          <div class="pill-row">
+            <span class="pill">95%</span>
+            <span class="pill">3x faster</span>
+            <span class="pill">Smart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="half now reveal reveal-2">
+    <div class="pane">
+      <div class="pane-eyebrow">FOLIO ↦</div>
+      <h2 class="pane-word">sourced.</h2>
+      <p class="pane-sub">Every palette cites a real reference.<br>Every slide pattern has a stated job.<br>One accent per slide. One wrong colour per palette.</p>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div>
+          <div class="mock-url">decks/q3-readout/03-versus.html</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-eyebrow">03 · contrast · then-now</div>
+          <div class="mock-title">A deck that <span class="accent">refuses</span><br>to be universal.</div>
+          <div class="mock-rule">
+            palette: telex-1986 · stamp appears<br>once per page · ink on paper only<br>· muddy reserved for footnotes
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+</div>
+
+<div class="key-hint">press <kbd>v</kbd> to flip the seam</div>
+
+<div class="slide-foot">
+  <a href="02-loop.html">← Prev</a>
+  <a href="04-quote.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'v' || e.key === 'V') { document.body.classList.toggle('swapped'); }
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '04-quote.html';
+    if (e.key === 'ArrowLeft') location.href = '02-loop.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!--
+  Pattern: 08 · Stack
+  Job:     show layered architecture, dependencies, a tech stack, a value chain.
+  Slot:    late-middle.
+  Shape:   meta-and-diagram. Vertical (or horizontal) stacked blocks. Labels left,
+           layers right. The deep --field token for the heaviest layer; --surface-2
+           for a mid layer; --ground for the airy top. Connecting strokes between
+           layers if movement matters.
+  Replace: {{TITLE}}, {{TOPIC}}, {{SLIDE_NUM}}, {{TOTAL}},
+           {{PREV_HREF}}, {{NEXT_HREF}}, {{EYEBROW}}, {{STATION}}, {{STATION_SUB}},
+           {{BODY}}, {{LEGEND}}, {{TOP_LABEL}}, {{TOP_CONTENT}},
+           {{MIDDLE_LABEL}}, {{MIDDLE_STROKES}},
+           {{FIELD_LABEL}}, {{FIELD_CONTENT}}, {{SIDE_DOTS}}.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}} · {{SLIDE_NUM}} / {{TOTAL}} · Stack</title>
+<link rel="stylesheet" href="assets/palette.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { overflow: hidden; }
+
+  .stack-meta .station {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    line-height: 1.04; letter-spacing: -0.02em;
+    color: var(--type); margin-bottom: 1.4rem;
+  }
+  .stack-meta .station .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--structure);
+    display: block; font-size: 0.55em; margin-top: 0.4rem;
+    letter-spacing: 0.04em;
+  }
+  .stack-meta p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--structure);
+    font-size: 1.15rem; line-height: 1.6;
+    max-width: 32ch; margin-bottom: 1.6rem;
+  }
+  .stack-meta .legend {
+    margin-top: 2rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .stack-meta .legend-row {
+    display: flex; align-items: center; gap: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem; color: var(--structure);
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .stack-meta .swatch { width: 12px; height: 12px; border: 1px solid var(--structure); }
+  .stack-meta .swatch.field { background: var(--field); border-color: var(--field); }
+  .stack-meta .swatch.accent { background: var(--accent); border-color: var(--accent); border-radius: 50%; }
+  .stack-meta .swatch.dashed { background: transparent; border-style: dashed; }
+
+  .cross-section {
+    position: relative; height: 100%; overflow: hidden;
+  }
+  .layer {
+    position: absolute; left: 0; right: 0;
+    display: flex; align-items: center; padding: 0 3rem;
+  }
+  .layer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--type-dim);
+    position: absolute; left: 3rem; top: 1rem;
+  }
+
+  /* Top band */
+  .layer-top { top: 0; height: 30%; background: var(--surface-2); }
+
+  /* Middle band — strokes / movement */
+  .layer-middle {
+    position: absolute; top: 30%; left: 0; right: 0; height: 30%;
+    pointer-events: none;
+  }
+  .stroke-line {
+    position: absolute; bottom: 0;
+    width: 1px;
+    background: var(--field);
+    opacity: 0.5;
+    animation: rise 6s ease-in-out infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(20px) scaleY(0.4); opacity: 0.0; }
+    30%  { opacity: 0.6; }
+    70%  { opacity: 0.5; }
+    100% { transform: translateY(-20px) scaleY(1); opacity: 0; }
+  }
+
+  /* Surface line between bands */
+  .surface-line {
+    position: absolute; left: 0; right: 0; top: 60%;
+    height: 1px; background: var(--structure);
+    z-index: 5;
+  }
+  .surface-tag {
+    position: absolute; right: 3rem; top: calc(60% - 1.6rem);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--structure);
+    background: var(--surface-2); padding: 0 0.5rem;
+  }
+
+  /* Field band — bottom 40% */
+  .layer-field {
+    bottom: 0; height: 40%;
+    background: var(--field); color: var(--field-on);
+    display: flex; align-items: center; padding: 0 3rem;
+  }
+  .layer-field .layer-label { color: rgba(255,255,255,0.55); }
+  .field-content {
+    display: flex; align-items: baseline; gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .field-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500; font-style: italic;
+    font-size: clamp(5rem, 9vw, 7.5rem);
+    line-height: 1; letter-spacing: -0.04em;
+    color: var(--field-on);
+  }
+  .field-text { color: var(--field-on); max-width: 28ch; }
+  .field-text .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    opacity: 0.78; margin-bottom: 0.4rem;
+  }
+  .field-text .body {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem; line-height: 1.5;
+    opacity: 0.92;
+  }
+  .field-text .footnote {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.55;
+    margin-top: 0.6rem;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">{{TOPIC}}</span></div>
+  <div class="slide-counter">SLIDE · {{SLIDE_NUM}} / {{TOTAL}}</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="{{PREV_HREF}}">← Prev</a>
+    <a class="nav-link" href="{{NEXT_HREF}}">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  {{SIDE_DOTS}}
+</aside>
+
+<div class="meta-diagram">
+  <aside class="meta stack-meta">
+    <div class="eyebrow reveal reveal-1">{{EYEBROW}}</div>
+    <h2 class="station reveal reveal-2">
+      {{STATION}}
+      <span class="struct">{{STATION_SUB}}</span>
+    </h2>
+    <p class="reveal reveal-3">{{BODY}}</p>
+    <div class="legend reveal reveal-4">
+      {{LEGEND}}
+      <!-- Example legend rows:
+        <div class="legend-row"><span class="swatch accent"></span><span>label</span></div>
+        <div class="legend-row"><span class="swatch dashed"></span><span>label</span></div>
+        <div class="legend-row"><span class="swatch field"></span><span>label</span></div>
+      -->
+    </div>
+  </aside>
+
+  <div class="diagram cross-section">
+    <div class="layer layer-top reveal reveal-2">
+      <span class="layer-label">{{TOP_LABEL}}</span>
+      {{TOP_CONTENT}}
+    </div>
+
+    <div class="layer-middle reveal reveal-3">
+      {{MIDDLE_STROKES}}
+      <!-- Example strokes:
+        <div class="stroke-line" style="left: 12%; height: 80%; animation-delay: 0s;"></div>
+        <div class="stroke-line" style="left: 22%; height: 65%; animation-delay: 0.8s;"></div>
+        ...
+      -->
+    </div>
+
+    <div class="surface-line reveal reveal-3"></div>
+    <span class="surface-tag reveal reveal-3">{{MIDDLE_LABEL}}</span>
+
+    <div class="layer layer-field reveal reveal-4">
+      <span class="layer-label">{{FIELD_LABEL}}</span>
+      {{FIELD_CONTENT}}
+      <!-- Example field-content:
+        <div class="field-content">
+          <div class="field-num">86%</div>
+          <div class="field-text">
+            <div class="label">of evaporation</div>
+            <div class="body">comes from the oceans.</div>
+            <div class="footnote">source · usgs water science school</div>
+          </div>
+        </div>
+      -->
+    </div>
+  </div>
+</div>
+
+<div class="slide-foot">
+  <a href="{{PREV_HREF}}">← Prev</a>
+  <a href="{{NEXT_HREF}}">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '{{NEXT_HREF}}';
+    if (e.key === 'ArrowLeft') location.href = '{{PREV_HREF}}';
+  });
+</script>
+</body>
+</html>

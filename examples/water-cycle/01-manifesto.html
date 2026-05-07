@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Water Cycle · 1 / 5 · Manifesto</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* Manifesto — single typographic moment on rice paper */
+  .manifesto-stage {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    max-width: 1100px;
+  }
+  .topic-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.36em; text-transform: uppercase;
+    color: var(--timber); margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .topic-mark .stroke { width: 56px; height: 1px; background: var(--timber); }
+
+  .manifesto-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3rem, 6.5vw, 5.6rem);
+    line-height: 1.06; letter-spacing: -0.022em;
+    color: var(--sumi);
+    margin-bottom: 2.2rem;
+  }
+  .manifesto-line .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--timber);
+  }
+  .manifesto-line em {
+    font-style: italic;
+    color: var(--ai);
+    font-weight: 600;
+  }
+
+  .anchor-foot {
+    margin-top: 2.4rem;
+    display: flex; align-items: baseline; gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .anchor-rule { width: 64px; height: 1px; background: var(--timber); }
+  .anchor-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; font-size: 2.4rem; color: var(--sumi);
+    letter-spacing: -0.02em;
+  }
+  .anchor-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--timber);
+  }
+
+  /* Vertical Japanese-style date column on the right */
+  .date-column {
+    position: fixed; right: 4rem; bottom: 5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.24em;
+    color: var(--timber-mute);
+    writing-mode: vertical-rl; text-orientation: mixed;
+    display: flex; gap: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">Water Cycle</span></div>
+  <div class="slide-counter">SLIDE · 1 / 5</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="05-cycle.html">← Last</a>
+    <a class="nav-link" href="02-evaporation.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" class="current" data-label="1. Manifesto"></a>
+  <a href="02-evaporation.html" data-label="2. Evaporation"></a>
+  <a href="03-condensation.html" data-label="3. Condensation"></a>
+  <a href="04-precipitation.html" data-label="4. Precipitation"></a>
+  <a href="05-cycle.html" data-label="5. The Cycle"></a>
+</aside>
+
+<main>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="manifesto-stage">
+        <div class="topic-mark reveal reveal-1">
+          <span class="stroke"></span>
+          <span>I · The Water Cycle</span>
+        </div>
+
+        <h1 class="manifesto-line reveal reveal-2">
+          The drop in your glass<br>
+          has been a cloud, a river,<br>
+          a glacier, an ocean —<br>
+          <em>and will be again.</em>
+        </h1>
+
+        <div class="anchor-foot reveal reveal-3">
+          <span class="anchor-rule"></span>
+          <span class="anchor-num">~4,000,000,000</span>
+          <span class="anchor-label">years · same water · still going</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="date-column">
+  <span>EARTH'S ENDLESS JOURNEY</span>
+</div>
+
+<div class="slide-foot">
+  <a href="05-cycle.html">← Last</a>
+  <a href="02-evaporation.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '02-evaporation.html';
+    if (e.key === 'ArrowLeft') location.href = '05-cycle.html';
+  });
+</script>
+</body>
+</html>

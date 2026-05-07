@@ -1,0 +1,25 @@
+Folio Palette Library
+=====================
+
+The palette data in `palettes.json` and the visual demo in `palettes-demo/`
+are licensed under Creative Commons Attribution 4.0 International
+(CC-BY-4.0).
+
+You may use, adapt, and redistribute these palettes in any project,
+commercial or otherwise, provided you give appropriate credit:
+
+    Palettes from `folio` by Paolo Mottadelli
+    https://github.com/paolomoz/skills
+
+The hex values themselves are not copyrightable — colour cannot be owned.
+What is licensed is the curated set: the sourcing notes, role names,
+rules, and use_for/avoid_for guidance that make each palette refuse to
+be universal.
+
+License text: https://creativecommons.org/licenses/by/4.0/
+
+Each palette cites the real-world reference it draws from. Those
+references (Olivetti house style, Casio F-91W, TfL Night Tube,
+Risograph zine printing, Kodachrome 25/64 slide stock, Japanese minka
+interior) belong to their original creators and are referenced here
+in the same spirit a typography specimen cites a typeface.

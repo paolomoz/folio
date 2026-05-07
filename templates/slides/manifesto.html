@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+  Pattern: 01 · Manifesto
+  Job:     open the deck. State the anchor in one breath.
+  Slot:    always slide 1.
+  Shape:   centred-singleton. Oversized italic serif. One eyebrow, one
+           datum below as the anchor's stake.
+  Replace: {{TITLE}}, {{TOPIC}}, {{SLIDE_NUM}}, {{TOTAL}},
+           {{PREV_HREF}}, {{NEXT_HREF}}, {{EYEBROW}}, {{ANCHOR_LINES}},
+           {{DATUM_NUM}}, {{DATUM_LABEL}}, {{SIDE_DOTS}}, {{TAGLINE}}.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}} · {{SLIDE_NUM}} / {{TOTAL}} · Manifesto</title>
+<link rel="stylesheet" href="assets/palette.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  .manifesto-stage {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    max-width: 1100px;
+  }
+  .topic-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.36em; text-transform: uppercase;
+    color: var(--structure); margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .topic-mark .stroke { width: 56px; height: 1px; background: var(--structure); }
+
+  .manifesto-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3rem, 6.5vw, 5.6rem);
+    line-height: 1.06; letter-spacing: -0.022em;
+    color: var(--type);
+    margin-bottom: 2.2rem;
+  }
+  .manifesto-line em {
+    font-style: italic;
+    color: var(--field);
+    font-weight: 600;
+  }
+  .manifesto-line .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--structure);
+  }
+
+  .anchor-foot {
+    margin-top: 2.4rem;
+    display: flex; align-items: baseline; gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .anchor-rule { width: 64px; height: 1px; background: var(--structure); }
+  .anchor-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; font-size: 2.4rem; color: var(--type);
+    letter-spacing: -0.02em;
+  }
+  .anchor-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--structure);
+  }
+
+  .tagline-column {
+    position: fixed; right: 4rem; bottom: 5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.24em;
+    color: var(--type-dim);
+    writing-mode: vertical-rl; text-orientation: mixed;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">{{TOPIC}}</span></div>
+  <div class="slide-counter">SLIDE · {{SLIDE_NUM}} / {{TOTAL}}</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="{{PREV_HREF}}">← Prev</a>
+    <a class="nav-link" href="{{NEXT_HREF}}">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  {{SIDE_DOTS}}
+</aside>
+
+<main>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="manifesto-stage">
+        <div class="topic-mark reveal reveal-1">
+          <span class="stroke"></span>
+          <span>{{EYEBROW}}</span>
+        </div>
+
+        <h1 class="manifesto-line reveal reveal-2">
+          {{ANCHOR_LINES}}
+        </h1>
+
+        <div class="anchor-foot reveal reveal-3">
+          <span class="anchor-rule"></span>
+          <span class="anchor-num">{{DATUM_NUM}}</span>
+          <span class="anchor-label">{{DATUM_LABEL}}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="tagline-column">
+  <span>{{TAGLINE}}</span>
+</div>
+
+<div class="slide-foot">
+  <a href="{{PREV_HREF}}">← Prev</a>
+  <a href="{{NEXT_HREF}}">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '{{NEXT_HREF}}';
+    if (e.key === 'ArrowLeft') location.href = '{{PREV_HREF}}';
+  });
+</script>
+</body>
+</html>

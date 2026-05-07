@@ -1,0 +1,192 @@
+/* ══════════════════════════════════════════════════════════════════
+   Water Cycle — Shoji palette · folio
+   Source: Japanese minka interior · winter light through rice paper
+   No gradients · no drop shadows · negative space is itself a colour
+   ══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* Shoji palette tokens */
+  --shoji:   #f2eadc;   /* rice paper, ground */
+  --tatami:  #bca77d;   /* woven straw, secondary surface */
+  --timber:  #3b2a1d;   /* stained beam, structural type */
+  --ai:      #1d3a4e;   /* indigo cloth, single deep field */
+  --sumi:    #191613;   /* ink, body type */
+  --shu:     #a8554a;   /* vermilion seal — ONCE per deck */
+
+  /* Derived softs (no new hues, only tinted variants of named tokens) */
+  --shoji-warm:  #ece2cf;
+  --tatami-mute: rgba(188, 167, 125, 0.32);
+  --timber-mute: rgba(59, 42, 29, 0.55);
+  --timber-faint: rgba(59, 42, 29, 0.32);
+  --rule:        rgba(59, 42, 29, 0.18);
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--shoji); color: var(--sumi);
+  line-height: 1.4; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── Subtle paper grain (CSS-only, no gradient — repeated dot pattern) ── */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(rgba(59,42,29,0.04) 1px, transparent 1px);
+  background-size: 6px 6px;
+  mix-blend-mode: multiply;
+}
+
+/* ── TOP NAV ──────────────────────────────────────────────────── */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 2rem; height: 64px;
+  background: var(--shoji);
+  border-bottom: 1px solid var(--rule);
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 500;
+  font-size: 1.2rem; display: flex; gap: 0.5rem; align-items: baseline;
+  color: var(--timber);
+}
+.logo .sep { color: var(--timber-faint); font-weight: 300; font-style: normal; }
+.logo .topic { color: var(--sumi); font-style: normal; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; letter-spacing: 0.04em; }
+.slide-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: var(--timber-mute);
+  letter-spacing: 0.22em; text-transform: uppercase;
+}
+.topnav-actions { display: flex; gap: 0.4rem; }
+.nav-link {
+  padding: 0.4rem 0.9rem; border-radius: 2px;
+  color: var(--timber); font-size: 0.85rem;
+  border: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em; transition: all 0.2s;
+  background: transparent;
+}
+.nav-link:hover { border-color: var(--timber); color: var(--sumi); }
+
+/* ── SIDE DOTS ────────────────────────────────────────────────── */
+.side-dots {
+  position: fixed; right: 1.6rem; top: 50%; transform: translateY(-50%);
+  z-index: 200; display: flex; flex-direction: column; gap: 0.85rem;
+}
+.side-dots a {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--timber-mute);
+  transition: all 0.2s; position: relative;
+}
+.side-dots a:hover { border-color: var(--timber); background: var(--tatami); }
+.side-dots a.current { background: var(--ai); border-color: var(--ai); }
+.side-dots a::after {
+  content: attr(data-label); position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+  white-space: nowrap; font-size: 0.78rem; background: var(--shoji);
+  padding: 0.35rem 0.7rem; border-radius: 2px; color: var(--sumi);
+  border: 1px solid var(--rule);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;
+}
+.side-dots a:hover::after { opacity: 1; }
+
+/* ── SLIDE — fit-to-viewport ─────────────────────────────────── */
+main { height: 100vh; }
+.slide {
+  height: 100vh; width: 100%;
+  display: flex; flex-direction: column;
+  padding: 88px 4rem 80px;
+  position: relative; z-index: 1;
+  overflow: hidden;
+}
+.slide-inner {
+  max-width: 1500px; width: 100%; margin: 0 auto;
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  min-height: 0;
+}
+
+/* ── REVEAL ───────────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal-1 { transition-delay: 0.1s; }
+.reveal-2 { transition-delay: 0.25s; }
+.reveal-3 { transition-delay: 0.4s; }
+.reveal-4 { transition-delay: 0.55s; }
+.reveal-5 { transition-delay: 0.7s; }
+
+/* ── PRIMITIVES ──────────────────────────────────────────── */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--timber); margin-bottom: 1.6rem; font-weight: 600;
+}
+.slide-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500; font-style: italic;
+  font-size: clamp(3.5rem, 7.5vw, 6rem);
+  line-height: 1.02; letter-spacing: -0.02em;
+  color: var(--sumi);
+  margin-bottom: 1.4rem;
+}
+.slide-title .struct {
+  font-family: 'Inter', sans-serif;
+  font-style: normal; font-weight: 300;
+  color: var(--timber);
+}
+.slide-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 400;
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  color: var(--timber); max-width: 900px;
+  line-height: 1.5; margin-bottom: 2.4rem;
+}
+
+/* Quiet datum — small monospace stat that doesn't shout */
+.datum {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; letter-spacing: 0.1em;
+  color: var(--timber); text-transform: uppercase;
+  font-weight: 500;
+}
+.datum .num { color: var(--sumi); font-weight: 700; }
+
+/* Indigo wall — ai used as a field, never a line */
+.ai-wall {
+  background: var(--ai); color: var(--shoji);
+}
+
+/* ── FOOTER NAV ──────────────────────────────────────────── */
+.slide-foot {
+  position: fixed; bottom: 1.2rem; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 0.6rem;
+  z-index: 100; pointer-events: none;
+}
+.slide-foot a {
+  pointer-events: auto;
+  padding: 0.45rem 1.1rem; border-radius: 2px;
+  background: var(--shoji);
+  color: var(--timber); font-size: 0.82rem;
+  border: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.slide-foot a:hover { border-color: var(--timber); color: var(--sumi); }
+
+/* ── RESPONSIVE / PRINT ──────────────────────────────────── */
+@media (max-width: 760px) {
+  .side-dots { display: none; }
+  .slide { padding: 72px 1.2rem 72px; }
+}
+@media print {
+  html, body { overflow: visible; height: auto; }
+  .topnav, .side-dots, .slide-foot { display: none !important; }
+  body { background: #fff; color: #000; }
+  .slide { page-break-after: always; height: auto; min-height: auto; }
+}

@@ -1,0 +1,23 @@
+/* night-tube · 2016 · TfL Night Tube launch · sodium-lit platform photography
+   Source: library/palettes.json
+   Rules: sodium illuminates only one element per screen · wine for last-call/shutdown · type is chalk on midnight, never inverted */
+:root {
+  --midnight: #0e1424;
+  --platform: #21283a;
+  --sodium:   #e89a3c;
+  --smoke:    #404654;
+  --chalk:    #e6e2d6;
+  --wine:     #9a1d28;
+
+  --ground:      var(--midnight);
+  --surface-2:   var(--platform);
+  --type:        var(--chalk);
+  --type-dim:    rgba(230, 226, 214, 0.72);
+  --type-faint:  rgba(230, 226, 214, 0.48);
+  --structure:   var(--smoke);
+  --rule:        rgba(230, 226, 214, 0.16);
+  --accent:      var(--sodium);
+  --field:       var(--platform);
+  --field-on:    var(--chalk);
+  --seal:        var(--wine);                    /* last-call, shutdown only */
+}

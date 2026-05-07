@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Water Cycle · 2 / 5 · Evaporation</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* Stack — vertical cross-section: ocean → surface → vapor → sun */
+  body { overflow: hidden; }
+
+  .stack-stage {
+    position: fixed; inset: 64px 0 56px 0;
+    display: grid;
+    grid-template-columns: minmax(320px, 38%) 1fr;
+  }
+
+  .stack-meta {
+    padding: 3rem 3rem 3rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--rule);
+  }
+  .stack-meta .eyebrow { margin-bottom: 1.4rem; }
+  .stack-meta .station {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    line-height: 1.04; letter-spacing: -0.02em;
+    color: var(--sumi); margin-bottom: 1.4rem;
+  }
+  .stack-meta .station .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--timber);
+    display: block; font-size: 0.55em; margin-top: 0.4rem;
+    letter-spacing: 0.04em;
+  }
+  .stack-meta p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--timber);
+    font-size: 1.15rem; line-height: 1.6;
+    max-width: 32ch; margin-bottom: 1.6rem;
+  }
+
+  .stack-meta .legend {
+    margin-top: 2rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .stack-meta .legend-row {
+    display: flex; align-items: center; gap: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem; color: var(--timber);
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .stack-meta .swatch { width: 12px; height: 12px; border: 1px solid var(--timber); }
+  .stack-meta .swatch.ai { background: var(--ai); border-color: var(--ai); }
+  .stack-meta .swatch.sun { background: var(--tatami); border-color: var(--tatami); border-radius: 50%; }
+  .stack-meta .swatch.vapor { background: transparent; border-style: dashed; }
+
+  /* The diagram: full-height vertical cross-section */
+  .cross-section {
+    position: relative; height: 100%; overflow: hidden;
+  }
+  .layer {
+    position: absolute; left: 0; right: 0;
+    display: flex; align-items: center; padding: 0 3rem;
+  }
+  .layer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--timber-mute);
+    position: absolute; left: 3rem; top: 1rem;
+  }
+
+  /* SKY band — top 30% */
+  .layer-sky { top: 0; height: 30%; background: var(--shoji-warm); }
+  .sun {
+    position: absolute; top: 18%; right: 8%;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--tatami);
+  }
+  .sun-rays {
+    position: absolute; top: calc(18% + 28px); right: calc(8% + 28px);
+    width: 200px; height: 200px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .sun-ray {
+    position: absolute; top: 50%; left: 50%;
+    width: 1px; height: 90px;
+    background: var(--tatami);
+    transform-origin: top center;
+    opacity: 0.45;
+  }
+
+  /* SURFACE — thin band 30% to 35% */
+  .surface-line {
+    position: absolute; left: 0; right: 0; top: 60%;
+    height: 1px; background: var(--timber);
+    z-index: 5;
+  }
+  .surface-tag {
+    position: absolute; right: 3rem; top: calc(60% - 1.6rem);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--timber);
+    background: var(--shoji-warm); padding: 0 0.5rem;
+  }
+
+  /* VAPOR — between sky and ocean, rising strokes */
+  .vapor-zone {
+    position: absolute; top: 30%; left: 0; right: 0; height: 30%;
+    pointer-events: none;
+  }
+  .vapor-stroke {
+    position: absolute; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to top, var(--ai) 0%, transparent 100%);
+    /* exception: this gradient is *fade-to-transparent*, not a hue gradient — single-token */
+    opacity: 0.5;
+    animation: rise 6s ease-in-out infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(20px) scaleY(0.4); opacity: 0.0; }
+    30%  { opacity: 0.6; }
+    70%  { opacity: 0.5; }
+    100% { transform: translateY(-20px) scaleY(1); opacity: 0; }
+  }
+
+  /* OCEAN — bottom 40% — AI wall */
+  .layer-ocean {
+    bottom: 0; height: 40%;
+    background: var(--ai); color: var(--shoji);
+    display: flex; align-items: center; padding: 0 3rem;
+  }
+  .layer-ocean .layer-label { color: rgba(242,234,220,0.55); }
+  .ocean-content {
+    display: flex; align-items: baseline; gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .ocean-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500; font-style: italic;
+    font-size: clamp(5rem, 9vw, 7.5rem);
+    line-height: 1; letter-spacing: -0.04em;
+    color: var(--shoji);
+  }
+  .ocean-text {
+    color: var(--shoji);
+    max-width: 28ch;
+  }
+  .ocean-text .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(242,234,220,0.78);
+    margin-bottom: 0.4rem;
+  }
+  .ocean-text .body {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem; line-height: 1.5;
+    color: rgba(242,234,220,0.92);
+  }
+  .ocean-text .footnote {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(242,234,220,0.55);
+    margin-top: 0.6rem;
+  }
+
+  /* Altitude axis on the far right */
+  .altitude-axis {
+    position: absolute; right: 0.8rem; top: 0; bottom: 0;
+    width: 1.2rem; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.18em;
+    color: var(--timber-mute);
+    writing-mode: vertical-rl; text-orientation: mixed;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">Water Cycle</span></div>
+  <div class="slide-counter">SLIDE · 2 / 5</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="01-manifesto.html">← Prev</a>
+    <a class="nav-link" href="03-condensation.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-evaporation.html" class="current" data-label="2. Evaporation"></a>
+  <a href="03-condensation.html" data-label="3. Condensation"></a>
+  <a href="04-precipitation.html" data-label="4. Precipitation"></a>
+  <a href="05-cycle.html" data-label="5. The Cycle"></a>
+</aside>
+
+<div class="stack-stage">
+  <aside class="stack-meta">
+    <div class="eyebrow reveal reveal-1">II · Stack · Phase 1</div>
+    <h2 class="station reveal reveal-2">
+      Evaporation,<br>
+      <span class="struct">and Transpiration.</span>
+    </h2>
+    <p class="reveal reveal-3">
+      The sun lifts liquid water into the air as vapour.
+      Plants release it through their leaves.
+      The cycle begins, every minute, everywhere there is light.
+    </p>
+    <div class="legend reveal reveal-4">
+      <div class="legend-row"><span class="swatch sun"></span><span>solar forcing</span></div>
+      <div class="legend-row"><span class="swatch vapor"></span><span>vapour, rising</span></div>
+      <div class="legend-row"><span class="swatch ai"></span><span>ocean — source</span></div>
+    </div>
+  </aside>
+
+  <div class="cross-section">
+    <!-- SKY -->
+    <div class="layer layer-sky reveal reveal-2">
+      <span class="layer-label">↑ Atmosphere</span>
+      <div class="sun"></div>
+      <div class="sun-rays">
+        <div class="sun-ray" style="transform: translate(-50%,0) rotate(-30deg);"></div>
+        <div class="sun-ray" style="transform: translate(-50%,0) rotate(-15deg);"></div>
+        <div class="sun-ray" style="transform: translate(-50%,0) rotate(0deg);"></div>
+        <div class="sun-ray" style="transform: translate(-50%,0) rotate(15deg);"></div>
+        <div class="sun-ray" style="transform: translate(-50%,0) rotate(30deg);"></div>
+      </div>
+    </div>
+
+    <!-- VAPOR ZONE — animated rising strokes -->
+    <div class="vapor-zone reveal reveal-3">
+      <div class="vapor-stroke" style="left: 12%; height: 80%; animation-delay: 0s;"></div>
+      <div class="vapor-stroke" style="left: 22%; height: 65%; animation-delay: 0.8s;"></div>
+      <div class="vapor-stroke" style="left: 34%; height: 90%; animation-delay: 1.6s;"></div>
+      <div class="vapor-stroke" style="left: 46%; height: 70%; animation-delay: 0.4s;"></div>
+      <div class="vapor-stroke" style="left: 58%; height: 85%; animation-delay: 2.0s;"></div>
+      <div class="vapor-stroke" style="left: 70%; height: 60%; animation-delay: 1.2s;"></div>
+      <div class="vapor-stroke" style="left: 84%; height: 95%; animation-delay: 0.6s;"></div>
+    </div>
+
+    <!-- SURFACE -->
+    <div class="surface-line reveal reveal-3"></div>
+    <span class="surface-tag reveal reveal-3">↤ surface</span>
+
+    <!-- OCEAN -->
+    <div class="layer layer-ocean reveal reveal-4">
+      <span class="layer-label">↓ Ocean · Soil · Plant</span>
+      <div class="ocean-content">
+        <div class="ocean-num">86%</div>
+        <div class="ocean-text">
+          <div class="label">of evaporation</div>
+          <div class="body">
+            comes from the oceans.<br>
+            the rest from lakes, rivers, soil,<br>
+            and the breath of plants.
+          </div>
+          <div class="footnote">source · usgs water science school</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALTITUDE AXIS -->
+    <div class="altitude-axis reveal reveal-5">
+      <span>↑ vapour rises</span>
+      <span>↓ liquid pools</span>
+    </div>
+  </div>
+</div>
+
+<div class="slide-foot">
+  <a href="01-manifesto.html">← Prev</a>
+  <a href="03-condensation.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '03-condensation.html';
+    if (e.key === 'ArrowLeft') location.href = '01-manifesto.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!--
+  Pattern: 03 · Versus (horizontal axis · variant)
+  Job:     contrast two states stacked physically: above/below, surface/deep,
+           visible/hidden, public/private. The seam is the soil-line, the
+           waterline, the basement floor — anywhere geometry is the contrast.
+  Slot:    middle.
+  Shape:   full-bleed. Two half-bands split horizontally with a slight diagonal.
+           Top = ABOVE / surface. Bottom = BELOW / deep, often --field as wall.
+           Use vertical animation strokes (rain, infiltration) if movement matters.
+  Replace: {{TITLE}}, {{TOPIC}}, {{SLIDE_NUM}}, {{TOTAL}},
+           {{PREV_HREF}}, {{NEXT_HREF}}, {{SIDE_DOTS}},
+           {{EYEBROW}}, {{HEADLINE}}, {{HEADLINE_STRUCT}}, {{PRETEXT}},
+           {{ABOVE_WORD}}, {{ABOVE_STRUCT}}, {{ABOVE_SUB}}, {{ABOVE_TAG}},
+           {{BELOW_WORD}}, {{BELOW_STRUCT}}, {{BELOW_SUB}}, {{BELOW_TAG}},
+           {{SEAM_LABEL}}, {{ABOVE_MOTION}}, {{BELOW_MOTION}}.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}} · {{SLIDE_NUM}} / {{TOTAL}} · Versus (horizontal)</title>
+<link rel="stylesheet" href="assets/palette.css">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { overflow: hidden; }
+
+  .versus-stage { position: fixed; inset: 64px 0 56px 0; }
+
+  .versus-title {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 1.6rem 4rem 1.4rem;
+    display: flex; align-items: baseline; gap: 2rem;
+    z-index: 30;
+    background: var(--ground);
+    border-bottom: 1px solid var(--rule);
+  }
+  .versus-title .eyebrow { margin-bottom: 0; }
+  .versus-title h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    letter-spacing: -0.015em; color: var(--type);
+    line-height: 1.1;
+  }
+  .versus-title h2 .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--structure);
+  }
+  .versus-title .pretext {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.05rem; color: var(--structure);
+    margin-left: auto; max-width: 38ch; line-height: 1.45;
+  }
+
+  .half {
+    position: absolute; left: 0; right: 0;
+    overflow: hidden;
+  }
+  .half.above {
+    top: 90px; height: 50%;
+    background: var(--surface-2);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  }
+  .half.below {
+    top: calc(90px + 47%); height: calc(53% - 90px);
+    background: var(--field); color: var(--field-on);
+    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .pane { position: absolute; padding: 2.4rem 4rem; width: 50%; }
+  .pane.left  { left: 0;  top: 1rem; }
+  .pane.right { right: 0; top: 1rem; text-align: right; }
+  .below .pane.left  { top: 3rem; }
+  .below .pane.right { top: 3rem; }
+
+  .word {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3.4rem, 6vw, 5rem);
+    line-height: 0.98; letter-spacing: -0.025em;
+    margin-bottom: 0.8rem;
+  }
+  .above .word { color: var(--type); }
+  .below .word { color: var(--field-on); }
+  .word .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    font-size: 0.5em;
+    display: block; margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .above .word .struct { color: var(--structure); }
+  .below .word .struct { color: var(--field-on); opacity: 0.78; }
+
+  .pane-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem; line-height: 1.55;
+    max-width: 30ch;
+  }
+  .above .pane-sub { color: var(--structure); }
+  .below .pane-sub { color: var(--field-on); opacity: 0.88; }
+  .pane.right .pane-sub { margin-left: auto; }
+
+  /* Optional: above-side motion (e.g. rain falling) */
+  .above-motion {
+    position: absolute; top: 0; left: 0; right: 0; height: 40%;
+    pointer-events: none; z-index: 5;
+  }
+  .above-motion .drop {
+    position: absolute;
+    width: 1px; height: 16px;
+    background: var(--field);
+    opacity: 0.5;
+    animation: fall 1.4s linear infinite;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(-30px); opacity: 0; }
+    20%  { opacity: 0.55; }
+    80%  { opacity: 0.4; }
+    100% { transform: translateY(160px); opacity: 0; }
+  }
+
+  /* Optional: below-side motion (downward strokes) */
+  .below-motion {
+    position: absolute; top: 0; left: 8%; right: 8%; bottom: 0;
+    pointer-events: none;
+  }
+  .below-motion .stroke {
+    position: absolute; top: 18%;
+    width: 1px;
+    background: var(--field-on); opacity: 0.42;
+  }
+  .below-motion .stroke::after {
+    content: "↓";
+    position: absolute; bottom: -6px; left: -4px;
+    color: var(--field-on); opacity: 0.7; font-size: 0.85rem;
+  }
+
+  .above-tag {
+    position: absolute; bottom: 24%; left: 50%; transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--field); background: var(--surface-2); padding: 0 0.6rem;
+  }
+  .below-tag {
+    position: absolute; bottom: 12%; right: 4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--field-on); opacity: 0.7;
+  }
+
+  .seam-label {
+    position: absolute; top: calc(90px + 47%); left: 4rem;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--structure); background: var(--ground); padding: 0 0.6rem;
+    z-index: 25;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">{{TOPIC}}</span></div>
+  <div class="slide-counter">SLIDE · {{SLIDE_NUM}} / {{TOTAL}}</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="{{PREV_HREF}}">← Prev</a>
+    <a class="nav-link" href="{{NEXT_HREF}}">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  {{SIDE_DOTS}}
+</aside>
+
+<div class="versus-stage">
+
+  <header class="versus-title reveal reveal-1">
+    <span class="eyebrow">{{EYEBROW}}</span>
+    <h2>{{HEADLINE}} <span class="struct">{{HEADLINE_STRUCT}}</span></h2>
+    <p class="pretext">{{PRETEXT}}</p>
+  </header>
+
+  <div class="half above reveal reveal-2">
+    <div class="above-motion">
+      {{ABOVE_MOTION}}
+      <!-- Example: <div class="drop" style="left: 8%;  animation-delay: 0s;"></div> ... -->
+    </div>
+
+    <div class="pane left">
+      <h3 class="word">
+        {{ABOVE_WORD}}
+        <span class="struct">{{ABOVE_STRUCT}}</span>
+      </h3>
+      <p class="pane-sub">{{ABOVE_SUB}}</p>
+    </div>
+
+    <span class="above-tag">{{ABOVE_TAG}}</span>
+  </div>
+
+  <span class="seam-label">{{SEAM_LABEL}}</span>
+
+  <div class="half below reveal reveal-3">
+    <div class="below-motion">
+      {{BELOW_MOTION}}
+      <!-- Example: <div class="stroke" style="left: 6%; height: 60%;"></div> ... -->
+    </div>
+
+    <div class="pane right">
+      <h3 class="word">
+        {{BELOW_WORD}}
+        <span class="struct">{{BELOW_STRUCT}}</span>
+      </h3>
+      <p class="pane-sub">{{BELOW_SUB}}</p>
+    </div>
+
+    <span class="below-tag">{{BELOW_TAG}}</span>
+  </div>
+
+</div>
+
+<div class="slide-foot">
+  <a href="{{PREV_HREF}}">← Prev</a>
+  <a href="{{NEXT_HREF}}">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '{{NEXT_HREF}}';
+    if (e.key === 'ArrowLeft') location.href = '{{PREV_HREF}}';
+  });
+</script>
+</body>
+</html>

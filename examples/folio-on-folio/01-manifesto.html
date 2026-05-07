@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>folio · 1 / 6 · Manifesto</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: var(--ink); }
+  #plasma { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; }
+
+  .cover {
+    height: 100vh; padding: 80px 3rem;
+    display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: 3rem; max-width: 1500px; margin: 0 auto;
+    position: relative; z-index: 2;
+    align-items: center;
+  }
+  .stamp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1.2rem;
+    font-weight: 600;
+  }
+  .stamp::before {
+    content: ''; display: block; width: 70px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--cyan));
+    border-radius: 2px;
+  }
+  .stamp .blink {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--violet); display: inline-block;
+    animation: stampBlink 1.4s ease-in-out infinite;
+    box-shadow: 0 0 12px var(--violet);
+  }
+  @keyframes stampBlink {
+    0%, 100% { opacity: 0.3; transform: scale(0.85); }
+    50%      { opacity: 1; transform: scale(1.15); }
+  }
+  .manifesto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3.6rem, 8.8vw, 7.6rem);
+    line-height: 1.0; letter-spacing: -0.03em;
+    color: var(--dust);
+  }
+  .manifesto .word {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .manifesto .punc { color: var(--violet); font-weight: 700; font-style: normal; }
+
+  .terminal {
+    background: rgba(6, 10, 20, 0.7);
+    border: 1px solid rgba(95, 212, 255, 0.18);
+    border-radius: 6px;
+    backdrop-filter: blur(14px);
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(192,132,252,0.05);
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.25);
+  }
+  .term-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .term-dot.r { background: #ff5f57; }
+  .term-dot.y { background: #ffbd2e; }
+  .term-dot.g { background: #28ca42; }
+  .term-title {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem; color: var(--dust-faint); letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+  .term-body {
+    padding: 1.4rem 1.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.98rem; line-height: 1.7;
+    color: var(--dust);
+    min-height: 360px;
+  }
+  .term-body .pr { color: var(--cyan); margin-right: 0.6rem; }
+  .term-body .ok { color: #28ca42; }
+  .term-body .warn { color: #ffbd2e; }
+  .term-body .vio { color: var(--violet); }
+  .term-body .dim { color: var(--dust-faint); }
+  .term-body em { color: var(--cyan-bright); font-style: italic; }
+  .cursor {
+    display: inline-block; width: 0.6em; height: 1.05em;
+    background: var(--cyan); margin-left: 0.2em;
+    vertical-align: -0.18em;
+    animation: caret 1s steps(2) infinite;
+  }
+  @keyframes caret { 50% { opacity: 0; } }
+
+  .cover-foot {
+    position: fixed; bottom: 1.4rem; left: 0; right: 0;
+    text-align: center; z-index: 100;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem; color: var(--dust-faint);
+    letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cover-foot a { color: var(--cyan); border-bottom: 2px dotted var(--cyan); padding-bottom: 2px; }
+
+  @media (max-width: 980px) {
+    .cover { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<canvas id="plasma"></canvas>
+
+<nav class="topnav">
+  <div class="logo"><span class="a">folio</span><span class="sep">/</span><span>on folio · vol I</span></div>
+  <div class="slide-counter">COVER · 1 / 6</div>
+  <div class="topnav-actions"><a class="nav-link" href="02-loop.html">Begin →</a></div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" class="current" data-label="1. Manifesto"></a>
+  <a href="02-loop.html" data-label="2. The Loop"></a>
+  <a href="03-versus.html" data-label="3. Versus"></a>
+  <a href="04-quote.html" data-label="4. Field Note"></a>
+  <a href="05-surface.html" data-label="5. Surface"></a>
+  <a href="06-arc.html" data-label="6. The Arc"></a>
+</aside>
+
+<main>
+  <section class="cover">
+    <div class="left">
+      <div class="stamp reveal reveal-1">
+        <span class="blink"></span>Manifesto · folio
+      </div>
+      <h1 class="manifesto reveal reveal-2">
+        Decks that<br>
+        <span class="word">say one thing</span> <span class="punc">·</span><br>
+        well<span class="punc">.</span>
+      </h1>
+    </div>
+    <div class="right reveal reveal-3">
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <div class="term-title">~/decks/folio-on-folio — zsh</div>
+        </div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cover-foot">
+    Press <a href="02-loop.html">→ to begin</a>
+  </div>
+</main>
+
+<script src="assets/effects.js"></script>
+<script>
+/* WebGL plasma */
+(function plasma() {
+  const canvas = document.getElementById('plasma');
+  const gl = canvas.getContext('webgl');
+  if (!gl) { canvas.style.background = 'radial-gradient(ellipse at 30% 50%, #1a1838 0%, #0a0d1a 70%)'; return; }
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+  const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p,0.0,1.0); }`;
+  const fs = `
+    precision mediump float;
+    uniform float u_time; uniform vec2 u_res;
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5*u_res)/min(u_res.x,u_res.y);
+      float t = u_time*0.10;
+      float v = sin(uv.x*3.0+t) + sin(uv.y*4.0-t*1.2)
+              + sin((uv.x+uv.y)*2.5+t*0.7) + sin(length(uv)*6.0-t*1.4);
+      v *= 0.25;
+      vec3 base = vec3(0.04,0.05,0.10);
+      vec3 cyan = vec3(0.37,0.83,1.0);
+      vec3 vio  = vec3(0.75,0.52,0.99);
+      vec3 c = base + cyan*0.20*sin(v*1.3+t) + vio*0.20*cos(v*0.9+t*0.7);
+      float d = length(uv)*0.9;
+      c *= 1.0 - smoothstep(0.6,1.4,d);
+      gl_FragColor = vec4(c,1.0);
+    }`;
+  function compile(type, src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog,'u_time');
+  const uRes  = gl.getUniformLocation(prog,'u_res');
+  const start = performance.now();
+  function loop(){
+    const t = (performance.now()-start)/1000;
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(loop);
+  }
+  resize(); window.addEventListener('resize', resize); loop();
+})();
+
+/* terminal typewriter */
+const termBody = document.getElementById('termBody');
+const lines = [
+  '<span class="pr">$</span> folio brief',
+  '<span class="dim">[ok]</span> <span class="ok">six questions</span> answered',
+  '<span class="dim">[ok]</span> anchor message: <em>say one thing well</em>',
+  '<span class="pr">$</span> folio plan',
+  '<span class="dim">[ok]</span> palette: <span class="vio">specimen-default</span> (meta only)',
+  '<span class="dim">[ok]</span> sequence: <span class="ok">6 patterns</span>',
+  '<span class="pr">$</span> folio typeset',
+  '<span class="dim">[..]</span> <span class="warn">rendering</span> slide 1/6…',
+  '',
+  '<span class="pr">›</span> <em>"a deck refusing to be universal."</em>',
+  '',
+  '<span class="pr">$</span> <span class="cursor"></span>',
+];
+let li = 0, ci = 0;
+function step() {
+  if (li >= lines.length) return;
+  const cur = lines[li];
+  if (cur.includes('cursor')) {
+    const div = document.createElement('div'); div.innerHTML = cur; termBody.appendChild(div); return;
+  }
+  if (ci === 0) {
+    const div = document.createElement('div'); div.dataset.idx = li; termBody.appendChild(div);
+  }
+  const div = termBody.querySelector(`[data-idx="${li}"]`);
+  div.innerHTML = cur.slice(0, ci);
+  ci++;
+  if (ci > cur.length) { div.innerHTML = cur; li++; ci = 0; setTimeout(step, 220); }
+  else setTimeout(step, 14 + Math.random()*12);
+}
+setTimeout(step, 700);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') location.href = '02-loop.html';
+});
+</script>
+</body>
+</html>

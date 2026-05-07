@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>folio · 5 / 6 · Surface</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body {
+    background:
+      radial-gradient(1px 1px at 24px 18px, rgba(255,255,255,0.04) 50%, transparent 51%) 0 0 / 48px 48px,
+      linear-gradient(180deg, #060A14 0%, #0c0f24 100%);
+  }
+
+  .layout {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-rows: auto 1fr; gap: 1.2rem;
+  }
+
+  .top {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 2rem;
+  }
+  .slide-title { font-size: clamp(2.8rem, 5.2vw, 4.4rem); margin-bottom: 0.4rem; }
+  .lead {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.2rem; color: var(--dust-dim); line-height: 1.4;
+  }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.9rem;
+    min-height: 0;
+  }
+  .tile {
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s ease, opacity 0.4s ease;
+    display: flex; flex-direction: column;
+    cursor: default;
+  }
+  .bento.has-pin .tile:not(.pinned) { opacity: 0.32; filter: blur(1px); }
+  .tile.pinned { transform: scale(1.02); z-index: 5; box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
+
+  .tile-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800; font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.15rem;
+  }
+  .tile-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 0.7rem; opacity: 0.7;
+    font-weight: 600;
+  }
+  .swatches {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 4px; margin-top: auto;
+  }
+  .sw {
+    aspect-ratio: 1 / 1;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.18);
+  }
+  .tile-rule {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem; line-height: 1.35;
+    margin-top: 0.6rem;
+  }
+
+  /* TELEX */
+  .t-telex { background: #efe6d2; color: #1d1815; }
+  .t-telex .tile-name, .t-telex .tile-rule { color: #1d1815; }
+  .t-telex .tile-source { color: #56463a; }
+
+  /* CASIO */
+  .t-casio { background: #a3a890; color: #22232b; }
+  .t-casio .tile-name { color: #22232b; }
+  .t-casio .tile-source { color: #2c2e2c; opacity: 0.85; }
+  .t-casio .tile-rule { color: #22232b; }
+
+  /* SHOJI */
+  .t-shoji { background: #f2eadc; color: #191613; }
+  .t-shoji .tile-name { color: #1d3a4e; }
+  .t-shoji .tile-source { color: #3b2a1d; opacity: 0.7; }
+  .t-shoji .tile-rule { color: #191613; }
+
+  /* RISO */
+  .t-riso { background: #efe7d3; color: #1a1a1a; }
+  .t-riso .tile-name { color: #1e2a64; }
+  .t-riso .tile-source { color: #ff5e8a; }
+  .t-riso .tile-rule { color: #1a1a1a; }
+
+  /* NIGHT TUBE */
+  .t-tube { background: #0e1424; color: #e6e2d6; }
+  .t-tube .tile-name { color: #e89a3c; }
+  .t-tube .tile-source { color: #e6e2d6; opacity: 0.65; }
+  .t-tube .tile-rule { color: #e6e2d6; }
+
+  /* KODACHROME */
+  .t-koda { background: #1c1612; color: #e8e0d0; }
+  .t-koda .tile-name { color: #f0c14a; }
+  .t-koda .tile-source { color: #e8e0d0; opacity: 0.6; }
+  .t-koda .tile-rule { color: #e8e0d0; }
+</style>
+</head>
+<body>
+<canvas class="bg-canvas" id="constellation"></canvas>
+
+<nav class="topnav">
+  <div class="logo"><span class="a">folio</span><span class="sep">/</span><span>Surface</span></div>
+  <div class="slide-counter">SLIDE · 5 / 6</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="04-quote.html">← Prev</a>
+    <a class="nav-link" href="06-arc.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-loop.html" data-label="2. The Loop"></a>
+  <a href="03-versus.html" data-label="3. Versus"></a>
+  <a href="04-quote.html" data-label="4. Field Note"></a>
+  <a href="05-surface.html" class="current" data-label="5. Surface"></a>
+  <a href="06-arc.html" data-label="6. The Arc"></a>
+</aside>
+
+<main>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="layout">
+        <div class="top">
+          <div>
+            <div class="eyebrow reveal">05 · surface · the library</div>
+            <h1 class="slide-title reveal reveal-1">
+              Six palettes that <span class="serif">refuse</span> to be universal.
+            </h1>
+            <p class="lead reveal reveal-2">Each renders here in its own register. Hover to focus.</p>
+          </div>
+        </div>
+
+        <div class="bento reveal reveal-3" id="bento">
+
+          <div class="tile t-telex" data-pin style="grid-column: span 2;">
+            <div class="tile-name">Telex</div>
+            <div class="tile-source">1986 · Olivetti house style</div>
+            <div class="tile-rule">"Stamp appears once per page."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#efe6d2"></div>
+              <div class="sw" style="background:#1d1815"></div>
+              <div class="sw" style="background:#c8302b"></div>
+              <div class="sw" style="background:#7a7268"></div>
+              <div class="sw" style="background:#dcd2b8"></div>
+              <div class="sw" style="background:#56463a"></div>
+            </div>
+          </div>
+
+          <div class="tile t-casio" data-pin style="grid-column: span 2;">
+            <div class="tile-name">F-91W</div>
+            <div class="tile-source">1989 · Casio LCD at noon</div>
+            <div class="tile-rule">"Amber only on press / hold."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#a3a890"></div>
+              <div class="sw" style="background:#22232b"></div>
+              <div class="sw" style="background:#181818"></div>
+              <div class="sw" style="background:#2c2e2c"></div>
+              <div class="sw" style="background:#7a7d6c"></div>
+              <div class="sw" style="background:#f5b65a"></div>
+            </div>
+          </div>
+
+          <div class="tile t-shoji" data-pin style="grid-column: span 2;">
+            <div class="tile-name">Shoji</div>
+            <div class="tile-source">1640 · winter rice paper</div>
+            <div class="tile-rule">"Shu only as a seal mark."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#f2eadc"></div>
+              <div class="sw" style="background:#bca77d"></div>
+              <div class="sw" style="background:#3b2a1d"></div>
+              <div class="sw" style="background:#1d3a4e"></div>
+              <div class="sw" style="background:#191613"></div>
+              <div class="sw" style="background:#a8554a"></div>
+            </div>
+          </div>
+
+          <div class="tile t-riso" data-pin style="grid-column: span 2;">
+            <div class="tile-name">Riso Bisque</div>
+            <div class="tile-source">2010s · zine on recycled stock</div>
+            <div class="tile-rule">"Two passes only — fluo + federal."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#efe7d3"></div>
+              <div class="sw" style="background:#ff5e8a"></div>
+              <div class="sw" style="background:#1e2a64"></div>
+              <div class="sw" style="background:#b8aa8e"></div>
+              <div class="sw" style="background:#1a1a1a"></div>
+              <div class="sw" style="background:#f0c93f"></div>
+            </div>
+          </div>
+
+          <div class="tile t-tube" data-pin style="grid-column: span 2;">
+            <div class="tile-name">Night Tube</div>
+            <div class="tile-source">2016 · sodium-lit platform</div>
+            <div class="tile-rule">"Wine reserved for last-call."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#0e1424"></div>
+              <div class="sw" style="background:#21283a"></div>
+              <div class="sw" style="background:#e89a3c"></div>
+              <div class="sw" style="background:#404654"></div>
+              <div class="sw" style="background:#e6e2d6"></div>
+              <div class="sw" style="background:#9a1d28"></div>
+            </div>
+          </div>
+
+          <div class="tile t-koda" data-pin style="grid-column: span 2;">
+            <div class="tile-name">Kodachrome</div>
+            <div class="tile-source">1965 · slide stock at noon</div>
+            <div class="tile-rule">"Vermillion never on velvia."</div>
+            <div class="swatches">
+              <div class="sw" style="background:#1c1612"></div>
+              <div class="sw" style="background:#d8331e"></div>
+              <div class="sw" style="background:#2961a8"></div>
+              <div class="sw" style="background:#f0c14a"></div>
+              <div class="sw" style="background:#1f6e3c"></div>
+              <div class="sw" style="background:#e8e0d0"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="slide-foot">
+  <a href="04-quote.html">← Prev</a>
+  <a href="06-arc.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  startConstellation('constellation', { density: 0.35 });
+
+  const bento = document.getElementById('bento');
+  const tiles = bento.querySelectorAll('.tile');
+  tiles.forEach(t => {
+    t.addEventListener('mouseenter', () => {
+      bento.classList.add('has-pin');
+      tiles.forEach(x => x.classList.remove('pinned'));
+      t.classList.add('pinned');
+    });
+    t.addEventListener('mouseleave', () => {
+      bento.classList.remove('has-pin');
+      t.classList.remove('pinned');
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '06-arc.html';
+    if (e.key === 'ArrowLeft') location.href = '04-quote.html';
+  });
+</script>
+</body>
+</html>

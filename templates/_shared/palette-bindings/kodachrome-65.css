@@ -1,0 +1,23 @@
+/* kodachrome-65 · 1965 · Kodachrome 25/64 slide stock · National Geographic colour rendition 1960–80
+   Source: library/palettes.json
+   Rules: never adjacent — cobalt and butter (they vibrate) · vermillion never on velvia · pearl is for mounting, never ground or type · max two saturated colours per surface */
+:root {
+  --slide:      #1c1612;
+  --vermillion: #d8331e;
+  --cobalt:     #2961a8;
+  --butter:     #f0c14a;
+  --velvia:     #1f6e3c;
+  --pearl:      #e8e0d0;
+
+  --ground:      var(--slide);
+  --surface-2:   #2a201a;                        /* slide warmed */
+  --type:        var(--pearl);
+  --type-dim:    rgba(232, 224, 208, 0.72);
+  --type-faint:  rgba(232, 224, 208, 0.48);
+  --structure:   var(--butter);
+  --rule:        rgba(232, 224, 208, 0.18);
+  --accent:      var(--vermillion);
+  --field:       var(--cobalt);
+  --field-on:    var(--pearl);
+  --seal:        var(--velvia);                  /* deliberately recessive — only unsaturated note (pearl) is the "wrong colour" per spec, but velvia works as the close-out stake */
+}

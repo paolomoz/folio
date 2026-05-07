@@ -1,0 +1,23 @@
+/* casio-f91w · 1989 · F-91W LCD readout, panel + digit, photographed at noon
+   Source: library/palettes.json
+   Rules: amber only on press/hold · all numerals monospace, segment-style · ghost behind active · no anti-aliasing */
+:root {
+  --panel: #a3a890;
+  --digit: #22232b;
+  --case:  #181818;
+  --bezel: #2c2e2c;
+  --ghost: #7a7d6c;
+  --amber: #f5b65a;
+
+  --ground:      var(--panel);
+  --surface-2:   var(--bezel);
+  --type:        var(--digit);
+  --type-dim:    rgba(34, 35, 43, 0.7);
+  --type-faint:  rgba(34, 35, 43, 0.4);
+  --structure:   var(--case);
+  --rule:        rgba(34, 35, 43, 0.22);
+  --accent:      var(--ghost);
+  --field:       var(--case);
+  --field-on:    var(--panel);
+  --seal:        var(--amber);                   /* on press/hold only */
+}

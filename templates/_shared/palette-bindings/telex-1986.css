@@ -1,0 +1,23 @@
+/* telex-1986 · Olivetti house style · Walter Ballmer, mid-80s
+   Source: library/palettes.json
+   Rules: stamp once per page · ink on paper only · muddy for footnotes */
+:root {
+  --paper: #efe6d2;
+  --ink:   #1d1815;
+  --stamp: #c8302b;
+  --rule-ink: #7a7268;
+  --hush:  #dcd2b8;
+  --muddy: #56463a;
+
+  --ground:      var(--paper);
+  --surface-2:   var(--hush);
+  --type:        var(--ink);
+  --type-dim:    rgba(29, 24, 21, 0.7);
+  --type-faint:  rgba(29, 24, 21, 0.4);
+  --structure:   var(--rule-ink);
+  --rule:        rgba(29, 24, 21, 0.22);
+  --accent:      var(--stamp);
+  --field:       var(--ink);
+  --field-on:    var(--paper);
+  --seal:        var(--muddy);                   /* the wrong colour, footnotes */
+}

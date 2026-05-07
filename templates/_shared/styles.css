@@ -1,0 +1,224 @@
+/* ══════════════════════════════════════════════════════════════════
+   folio · shared chrome
+   Palette-agnostic. Uses abstract role tokens that any palette binds.
+   See templates/_shared/palette-bindings/<id>.css for bindings.
+   ══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ── Abstract role tokens (safe defaults; palette bindings override) ─
+   --ground     page background
+   --surface-2  secondary surface (cards, alt panes)
+   --type       body type
+   --type-dim   secondary type
+   --type-faint tertiary type, footnotes
+   --structure  eyebrows, structural type, label colour
+   --rule       divider line (with alpha)
+   --accent     single-use-per-page colour
+   --field      deep-field "wall" — used as block background, never as line
+   --field-on   text colour against --field
+   --seal       wrong-colour, reserved for once-per-deck use
+*/
+:root {
+  --ground:      #f4f1ea;
+  --surface-2:   #e7e1d3;
+  --type:        #1a1a1a;
+  --type-dim:    rgba(26, 26, 26, 0.68);
+  --type-faint:  rgba(26, 26, 26, 0.42);
+  --structure:   #3b3b3b;
+  --rule:        rgba(26, 26, 26, 0.18);
+  --accent:      #a8554a;
+  --field:       #1d3a4e;
+  --field-on:    #f4f1ea;
+  --seal:        #a8554a;
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--ground); color: var(--type);
+  line-height: 1.4; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+
+/* ── TOP NAV ──────────────────────────────────────────────────── */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 2rem; height: 64px;
+  background: var(--ground);
+  border-bottom: 1px solid var(--rule);
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 500;
+  font-size: 1.2rem; display: flex; gap: 0.5rem; align-items: baseline;
+  color: var(--structure);
+}
+.logo .sep { color: var(--type-faint); font-weight: 300; font-style: normal; }
+.logo .topic {
+  color: var(--type); font-style: normal;
+  font-family: 'Inter', sans-serif; font-weight: 600;
+  font-size: 1rem; letter-spacing: 0.04em;
+}
+.slide-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: var(--type-dim);
+  letter-spacing: 0.22em; text-transform: uppercase;
+}
+.topnav-actions { display: flex; gap: 0.4rem; }
+.nav-link {
+  padding: 0.4rem 0.9rem; border-radius: 2px;
+  color: var(--structure); font-size: 0.85rem;
+  border: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em; transition: all 0.2s;
+  background: transparent;
+}
+.nav-link:hover { border-color: var(--structure); color: var(--type); }
+
+/* ── SIDE DOTS ────────────────────────────────────────────────── */
+.side-dots {
+  position: fixed; right: 1.6rem; top: 50%; transform: translateY(-50%);
+  z-index: 200; display: flex; flex-direction: column; gap: 0.85rem;
+}
+.side-dots a {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--type-dim);
+  transition: all 0.2s; position: relative;
+}
+.side-dots a:hover { border-color: var(--structure); background: var(--surface-2); }
+.side-dots a.current { background: var(--field); border-color: var(--field); }
+.side-dots a::after {
+  content: attr(data-label); position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+  white-space: nowrap; font-size: 0.78rem; background: var(--ground);
+  padding: 0.35rem 0.7rem; border-radius: 2px; color: var(--type);
+  border: 1px solid var(--rule);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;
+}
+.side-dots a:hover::after { opacity: 1; }
+
+/* ── SLIDE — fit-to-viewport ─────────────────────────────────── */
+main { height: 100vh; }
+.slide {
+  height: 100vh; width: 100%;
+  display: flex; flex-direction: column;
+  padding: 88px 4rem 80px;
+  position: relative; z-index: 1;
+  overflow: hidden;
+}
+.slide-inner {
+  max-width: 1500px; width: 100%; margin: 0 auto;
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  min-height: 0;
+}
+
+/* ── REVEAL ───────────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal-1 { transition-delay: 0.1s; }
+.reveal-2 { transition-delay: 0.25s; }
+.reveal-3 { transition-delay: 0.4s; }
+.reveal-4 { transition-delay: 0.55s; }
+.reveal-5 { transition-delay: 0.7s; }
+
+/* ── PRIMITIVES ──────────────────────────────────────────── */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--structure); margin-bottom: 1.6rem; font-weight: 600;
+}
+.slide-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500; font-style: italic;
+  font-size: clamp(3.5rem, 7.5vw, 6rem);
+  line-height: 1.02; letter-spacing: -0.02em;
+  color: var(--type);
+  margin-bottom: 1.4rem;
+}
+.slide-title .struct {
+  font-family: 'Inter', sans-serif;
+  font-style: normal; font-weight: 300;
+  color: var(--structure);
+}
+.slide-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 400;
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  color: var(--structure); max-width: 900px;
+  line-height: 1.5; margin-bottom: 2.4rem;
+}
+
+/* Quiet datum — small monospace stat that doesn't shout */
+.datum {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; letter-spacing: 0.1em;
+  color: var(--structure); text-transform: uppercase;
+  font-weight: 500;
+}
+.datum .num { color: var(--type); font-weight: 700; }
+
+/* Field block — use --field as a background block, never as a line */
+.field-block {
+  background: var(--field); color: var(--field-on);
+}
+
+/* Layout primitive: meta-and-diagram */
+.meta-diagram {
+  position: fixed; inset: 64px 0 56px 0;
+  display: grid; grid-template-columns: minmax(320px, 36%) 1fr;
+}
+.meta-diagram .meta {
+  padding: 3rem 3rem 3rem 4rem;
+  display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid var(--rule);
+}
+.meta-diagram .diagram {
+  position: relative; padding: 3rem 4rem 3rem 3rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Layout primitive: full-bleed (visual fills, meta floats) */
+.full-bleed {
+  position: fixed; inset: 64px 0 56px 0;
+}
+
+/* Layout primitive: centred-singleton */
+.centred-singleton {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  max-width: 1100px; margin: 0 auto;
+}
+
+/* ── FOOTER NAV ──────────────────────────────────────────── */
+.slide-foot {
+  position: fixed; bottom: 1.2rem; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 0.6rem;
+  z-index: 100; pointer-events: none;
+}
+.slide-foot a {
+  pointer-events: auto;
+  padding: 0.45rem 1.1rem; border-radius: 2px;
+  background: var(--ground);
+  color: var(--structure); font-size: 0.82rem;
+  border: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.slide-foot a:hover { border-color: var(--structure); color: var(--type); }
+
+/* ── RESPONSIVE / PRINT ──────────────────────────────────── */
+@media (max-width: 760px) {
+  .side-dots { display: none; }
+  .slide { padding: 72px 1.2rem 72px; }
+}
+@media print {
+  html, body { overflow: visible; height: auto; }
+  .topnav, .side-dots, .slide-foot { display: none !important; }
+  body { background: #fff; color: #000; }
+  .slide { page-break-after: always; height: auto; min-height: auto; }
+}

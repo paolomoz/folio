@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Water Cycle · 4 / 5 · Precipitation</title>
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* Versus — horizontal split: runoff (above) vs infiltration (below) */
+  body { overflow: hidden; }
+
+  .versus-stage {
+    position: fixed; inset: 64px 0 56px 0;
+  }
+
+  /* Title strip across the top */
+  .versus-title {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 1.6rem 4rem 1.4rem;
+    display: flex; align-items: baseline; gap: 2rem;
+    z-index: 30;
+    background: var(--shoji);
+    border-bottom: 1px solid var(--rule);
+  }
+  .versus-title .eyebrow { margin-bottom: 0; }
+  .versus-title h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    letter-spacing: -0.015em; color: var(--sumi);
+    line-height: 1.1;
+  }
+  .versus-title h2 .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    color: var(--timber);
+  }
+  .versus-title .pretext {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.05rem; color: var(--timber);
+    margin-left: auto; max-width: 38ch; line-height: 1.45;
+  }
+
+  /* The split halves */
+  .half {
+    position: absolute; left: 0; right: 0;
+    overflow: hidden;
+  }
+  .half.above {
+    top: 90px; height: 50%;
+    background: var(--shoji-warm);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+  }
+  .half.below {
+    top: calc(90px + 47%); height: calc(53% - 90px);
+    background: var(--ai); color: var(--shoji);
+    clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .pane {
+    position: absolute; padding: 2.4rem 4rem;
+    width: 50%;
+  }
+  .pane.left { left: 0; top: 1rem; }
+  .pane.right { right: 0; top: 1rem; text-align: right; }
+  .below .pane.left { top: 3rem; }
+  .below .pane.right { top: 3rem; }
+
+  .word {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(3.4rem, 6vw, 5rem);
+    line-height: 0.98; letter-spacing: -0.025em;
+    margin-bottom: 0.8rem;
+  }
+  .above .word { color: var(--sumi); }
+  .below .word { color: var(--shoji); }
+
+  .word .struct {
+    font-family: 'Inter', sans-serif;
+    font-style: normal; font-weight: 300;
+    font-size: 0.5em;
+    display: block; margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .above .word .struct { color: var(--timber); }
+  .below .word .struct { color: rgba(242,234,220,0.78); }
+
+  .pane-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.1rem; line-height: 1.55;
+    max-width: 30ch;
+  }
+  .above .pane-sub { color: var(--timber); }
+  .below .pane-sub { color: rgba(242,234,220,0.88); }
+
+  /* Right-side data column */
+  .pane.right .pane-sub { margin-left: auto; }
+
+  /* Rain falling above */
+  .rainfall {
+    position: absolute; top: 0; left: 0; right: 0; height: 40%;
+    pointer-events: none; z-index: 5;
+  }
+  .raindrop {
+    position: absolute;
+    width: 1px; height: 16px;
+    background: var(--ai);
+    opacity: 0.5;
+    animation: fall 1.4s linear infinite;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(-30px); opacity: 0; }
+    20%  { opacity: 0.55; }
+    80%  { opacity: 0.4; }
+    100% { transform: translateY(160px); opacity: 0; }
+  }
+
+  /* Runoff arrow — horizontal flow, above */
+  .runoff-flow {
+    position: absolute; bottom: 22%; left: 8%; right: 8%;
+    height: 1px; background: var(--ai); opacity: 0.7;
+  }
+  .runoff-flow::before {
+    content: "→";
+    position: absolute; right: -4px; top: -10px;
+    color: var(--ai); font-size: 1.2rem;
+  }
+  .runoff-tag {
+    position: absolute; bottom: 24%; left: 50%; transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ai); background: var(--shoji-warm); padding: 0 0.6rem;
+  }
+
+  /* Infiltration arrows — vertical, below */
+  .infiltration-zone {
+    position: absolute; top: 0; left: 8%; right: 8%; bottom: 0;
+    pointer-events: none;
+  }
+  .infil-stroke {
+    position: absolute; top: 18%;
+    width: 1px; height: 60%;
+    background: var(--shoji); opacity: 0.42;
+  }
+  .infil-stroke::after {
+    content: "↓";
+    position: absolute; bottom: -6px; left: -4px;
+    color: var(--shoji); opacity: 0.7; font-size: 0.85rem;
+  }
+  .infil-tag {
+    position: absolute; bottom: 12%; right: 4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(242,234,220,0.7);
+  }
+
+  /* Soil-line label */
+  .soil-line-label {
+    position: absolute; top: calc(90px + 47%); left: 4rem;
+    transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--timber); background: var(--shoji); padding: 0 0.6rem;
+    z-index: 25;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo"><span>folio</span><span class="sep">/</span><span class="topic">Water Cycle</span></div>
+  <div class="slide-counter">SLIDE · 4 / 5</div>
+  <div class="topnav-actions">
+    <a class="nav-link" href="03-condensation.html">← Prev</a>
+    <a class="nav-link" href="05-cycle.html">Next →</a>
+  </div>
+</nav>
+
+<aside class="side-dots">
+  <a href="01-manifesto.html" data-label="1. Manifesto"></a>
+  <a href="02-evaporation.html" data-label="2. Evaporation"></a>
+  <a href="03-condensation.html" data-label="3. Condensation"></a>
+  <a href="04-precipitation.html" class="current" data-label="4. Precipitation"></a>
+  <a href="05-cycle.html" data-label="5. The Cycle"></a>
+</aside>
+
+<div class="versus-stage">
+
+  <header class="versus-title reveal reveal-1">
+    <span class="eyebrow">IV · Versus · Phase 3</span>
+    <h2>Precipitation, <span class="struct">& Collection.</span></h2>
+    <p class="pretext">Rain or snow falls. At the soil, every drop chooses one of two paths — and the cycle keeps both.</p>
+  </header>
+
+  <!-- ABOVE — runoff -->
+  <div class="half above reveal reveal-2">
+    <div class="rainfall">
+      <div class="raindrop" style="left: 8%;  animation-delay: 0s;"></div>
+      <div class="raindrop" style="left: 14%; animation-delay: 0.4s;"></div>
+      <div class="raindrop" style="left: 20%; animation-delay: 0.8s;"></div>
+      <div class="raindrop" style="left: 26%; animation-delay: 0.2s;"></div>
+      <div class="raindrop" style="left: 32%; animation-delay: 0.6s;"></div>
+      <div class="raindrop" style="left: 38%; animation-delay: 1.0s;"></div>
+      <div class="raindrop" style="left: 44%; animation-delay: 0.3s;"></div>
+      <div class="raindrop" style="left: 50%; animation-delay: 0.7s;"></div>
+      <div class="raindrop" style="left: 56%; animation-delay: 1.1s;"></div>
+      <div class="raindrop" style="left: 62%; animation-delay: 0.1s;"></div>
+      <div class="raindrop" style="left: 68%; animation-delay: 0.5s;"></div>
+      <div class="raindrop" style="left: 74%; animation-delay: 0.9s;"></div>
+      <div class="raindrop" style="left: 80%; animation-delay: 0.25s;"></div>
+      <div class="raindrop" style="left: 86%; animation-delay: 0.65s;"></div>
+      <div class="raindrop" style="left: 92%; animation-delay: 1.05s;"></div>
+    </div>
+
+    <div class="pane left">
+      <h3 class="word">
+        runoff.
+        <span class="struct">— above the soil</span>
+      </h3>
+      <p class="pane-sub">
+        what cannot soak in flows downhill —
+        across rooftops, fields, asphalt —
+        gathering into streams and rivers
+        on its way back to the sea.
+      </p>
+    </div>
+
+    <div class="runoff-flow"></div>
+    <span class="runoff-tag">→ to rivers, lakes, the ocean</span>
+  </div>
+
+  <span class="soil-line-label">↤ soil surface</span>
+
+  <!-- BELOW — infiltration -->
+  <div class="half below reveal reveal-3">
+    <div class="infiltration-zone">
+      <div class="infil-stroke" style="left: 6%;"></div>
+      <div class="infil-stroke" style="left: 16%; height: 50%;"></div>
+      <div class="infil-stroke" style="left: 26%; height: 70%;"></div>
+      <div class="infil-stroke" style="left: 36%; height: 45%;"></div>
+      <div class="infil-stroke" style="left: 46%; height: 65%;"></div>
+      <div class="infil-stroke" style="left: 56%; height: 55%;"></div>
+      <div class="infil-stroke" style="left: 66%; height: 75%;"></div>
+      <div class="infil-stroke" style="left: 76%; height: 50%;"></div>
+      <div class="infil-stroke" style="left: 86%; height: 60%;"></div>
+    </div>
+
+    <div class="pane right">
+      <h3 class="word">
+        infiltration.
+        <span class="struct">— below the soil</span>
+      </h3>
+      <p class="pane-sub">
+        the rest seeps down through soil and rock —
+        pooling in aquifers, surfacing in springs,
+        held in the dark for years, sometimes
+        millennia, before joining the cycle again.
+      </p>
+    </div>
+
+    <span class="infil-tag">↓ aquifers · springs · wells</span>
+  </div>
+
+</div>
+
+<div class="slide-foot">
+  <a href="03-condensation.html">← Prev</a>
+  <a href="05-cycle.html">Next →</a>
+</div>
+
+<script src="assets/effects.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') location.href = '05-cycle.html';
+    if (e.key === 'ArrowLeft') location.href = '03-condensation.html';
+  });
+</script>
+</body>
+</html>
