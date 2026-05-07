@@ -1,0 +1,15 @@
+{
+  "name": "folio",
+  "owner": {
+    "name": "paolomoz"
+  },
+  "description": "Hand-tailored HTML decks — a Claude Code skill for specimen-style presentations.",
+  "plugins": [
+    {
+      "name": "folio",
+      "source": "./",
+      "description": "Hand-tailored HTML decks. Ten slide patterns, six sourced palettes, four phases of work.",
+      "version": "1.0.0"
+    }
+  ]
+}
